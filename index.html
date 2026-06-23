@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 People. 100 Days. Real Results.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">100<span>.</span>People</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#apply">Apply</a></li>
+  </ul>
+  <a href="#apply" class="nav-cta">I'm In → Apply Now</a>
+  <button class="hamburger" onclick="toggleMenu(this)" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow" data-reveal>Transformation Program</p>
+    <h1 class="hero-headline" data-reveal data-reveal-delay="1">
+      100<br>People.<br><span class="accent">100 Days.</span><br>Real Results.
+    </h1>
+    <p class="hero-sub" data-reveal data-reveal-delay="2">A 100-day transformation program for 100% committed men & women who are ready to change — for good.</p>
+    <div class="hero-badges" data-reveal data-reveal-delay="3">
+      <div class="hero-badge">
+        <svg viewBox="0 0 16 16"><path d="M8 1l1.5 3h3.5l-2.8 2.1 1 3.3L8 7.6l-3.2 1.8 1-3.3L3 4h3.5z"/></svg>
+        Proven System
+      </div>
+      <div class="hero-badge">
+        <svg viewBox="0 0 16 16"><path d="M8 1l1.5 3h3.5l-2.8 2.1 1 3.3L8 7.6l-3.2 1.8 1-3.3L3 4h3.5z"/></svg>
+        Expert Coaching
+      </div>
+      <div class="hero-badge">
+        <svg viewBox="0 0 16 16"><path d="M8 1l1.5 3h3.5l-2.8 2.1 1 3.3L8 7.6l-3.2 1.8 1-3.3L3 4h3.5z"/></svg>
+        100% Committed Community
+      </div>
+    </div>
+    <div class="hero-btns" data-reveal data-reveal-delay="4">
+      <a href="#apply" class="btn-primary">I'm In — Apply Now</a>
+      <a href="#about" class="btn-outline">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/><polygon points="7,6 13,9 7,12" fill="currentColor" stroke="none"/></svg>
+        See How It Works
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-pill">
+      <div class="hero-pill-dot"></div>
+      Only 100 Spots Available
+    </div>
+    <div class="hero-stats" data-reveal data-reveal-delay="2">
+      <div class="stat-card">
+        <div class="stat-num">7–10</div>
+        <div class="stat-label">Avg. KG Lost</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100</div>
+        <div class="stat-label">Days Program</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Alumni</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Avg. Rating</div>
+      </div>
+    </div>
+    <div class="spots-badge" data-reveal data-reveal-delay="3">
+      <div class="spots-num">100</div>
+      <div class="spots-label">Limited<br>People</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item"><span class="dot"></span>Shed 7–10 KG</div>
+    <div class="marquee-item"><span class="dot"></span>Get Fit</div>
+    <div class="marquee-item"><span class="dot"></span>Fix Health Issues</div>
+    <div class="marquee-item"><span class="dot"></span>No Boring Diets</div>
+    <div class="marquee-item"><span class="dot"></span>Personalized Training</div>
+    <div class="marquee-item"><span class="dot"></span>Mindset Coaching</div>
+    <div class="marquee-item"><span class="dot"></span>Daily Accountability</div>
+    <div class="marquee-item"><span class="dot"></span>Shed 7–10 KG</div>
+    <div class="marquee-item"><span class="dot"></span>Get Fit</div>
+    <div class="marquee-item"><span class="dot"></span>Fix Health Issues</div>
+    <div class="marquee-item"><span class="dot"></span>No Boring Diets</div>
+    <div class="marquee-item"><span class="dot"></span>Personalized Training</div>
+    <div class="marquee-item"><span class="dot"></span>Mindset Coaching</div>
+    <div class="marquee-item"><span class="dot"></span>Daily Accountability</div>
+  </div>
+</div>
+
+<!-- WHAT YOU'LL GET -->
+<section class="outcomes" id="about">
+  <p class="section-label" data-reveal>What You'll Get</p>
+  <h2 class="section-title" data-reveal data-reveal-delay="1">Simple. Sustainable.<br>Transformational.</h2>
+  <p class="section-sub" data-reveal data-reveal-delay="2">This is not another fad program. It's a proven system built on fitness, nutrition, mindset and accountability.</p>
+  <div class="outcomes-grid">
+    <div class="outcome-card" data-reveal>
+      <div class="outcome-icon">
+        <svg viewBox="0 0 28 28"><path d="M4 14h6m14 0h-6m-8 0a6 6 0 0112 0 6 6 0 01-12 0z"/><path d="M10 14V10m8 4v-4"/></svg>
+      </div>
+      <div class="outcome-title">Shed 7–10 KG</div>
+      <div class="outcome-desc">Sustainable fat loss that lasts. No crash diets, no rebound.</div>
+    </div>
+    <div class="outcome-card" data-reveal data-reveal-delay="1">
+      <div class="outcome-icon">
+        <svg viewBox="0 0 28 28"><path d="M6 18l4-8 4 6 4-10 4 12"/></svg>
+      </div>
+      <div class="outcome-title">Get Fit</div>
+      <div class="outcome-desc">Efficient workouts. Maximum results. No wasted hours.</div>
+    </div>
+    <div class="outcome-card" data-reveal data-reveal-delay="2">
+      <div class="outcome-icon">
+        <svg viewBox="0 0 28 28"><path d="M14 4a8 8 0 110 16A8 8 0 0114 4z"/><path d="M14 12v4m0-8v.5"/></svg>
+      </div>
+      <div class="outcome-title">Fix Health Issues</div>
+      <div class="outcome-desc">Feel better from the inside out. Energy, sleep, and mood restored.</div>
+    </div>
+    <div class="outcome-card" data-reveal data-reveal-delay="3">
+      <div class="outcome-icon">
+        <svg viewBox="0 0 28 28"><path d="M6 8l4 4-4 4m8 0h8"/></svg>
+      </div>
+      <div class="outcome-title">No Boring Diets</div>
+      <div class="outcome-desc">Flexible nutrition — no giving up tasty food you love.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT PROGRAM -->
+<section class="about">
+  <div class="about-img" data-reveal>
+    <div class="about-img-main">
+      <div class="img-placeholder">TRANSFORM</div>
+    </div>
+    <div class="about-img-overlay">
+      <div class="about-img-overlay-num">500+</div>
+      <div class="about-img-overlay-label">People Transformed</div>
+    </div>
+  </div>
+  <div class="about-content">
+    <p class="section-label" data-reveal>About The Program</p>
+    <h2 class="section-title" data-reveal data-reveal-delay="1">Not Another Fad. A Proven System.</h2>
+    <p class="section-sub" data-reveal data-reveal-delay="2">Built on fitness, nutrition, mindset and accountability to help you become your best self in just 100 days.</p>
+    <ul class="checklist" data-reveal data-reveal-delay="3">
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        Personalized training plans tailored to you
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        Flexible nutrition — no boring diets
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        Mindset coaching that creates lasting change
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        Daily accountability check-ins
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        Supportive community of 100 committed people
+      </li>
+    </ul>
+    <a href="#apply" class="btn-primary" data-reveal data-reveal-delay="4">Apply for the Next Batch</a>
+  </div>
+</section>
+
+<!-- REAL RESULTS -->
+<section class="results" id="results">
+  <p class="section-label" data-reveal>Real People. Real Results.</p>
+  <h2 class="section-title" data-reveal data-reveal-delay="1">What Our Members Say</h2>
+  <div class="results-grid">
+    <div class="result-card" data-reveal>
+      <div class="result-img">
+        <div class="img-placeholder">ROHIT</div>
+        <div class="result-badge">−8<span>KG</span></div>
+      </div>
+      <div class="result-body">
+        <div class="result-stars">★★★★★</div>
+        <p class="result-quote">"I've never been this consistent. Lost 8kg and gained real confidence in just 100 days."</p>
+        <div class="result-name">— Rohit, 28</div>
+      </div>
+    </div>
+    <div class="result-card" data-reveal data-reveal-delay="1">
+      <div class="result-img">
+        <div class="img-placeholder">PRIYA</div>
+        <div class="result-badge">−10<span>KG</span></div>
+      </div>
+      <div class="result-body">
+        <div class="result-stars">★★★★★</div>
+        <p class="result-quote">"Stronger, healthier and happier. This program completely changed my life and mindset."</p>
+        <div class="result-name">— Priya, 32</div>
+      </div>
+    </div>
+    <div class="result-card" data-reveal data-reveal-delay="2">
+      <div class="result-img">
+        <div class="img-placeholder">ARJUN</div>
+        <div class="result-badge">−9<span>KG</span></div>
+      </div>
+      <div class="result-body">
+        <div class="result-stars">★★★★★</div>
+        <p class="result-quote">"Real workouts. Real food. Real results. No fluff, just accountability that actually works."</p>
+        <div class="result-name">— Arjun, 30</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <p class="section-label" data-reveal>Choose Your Plan</p>
+  <h2 class="section-title" data-reveal data-reveal-delay="1">Invest In Your Transformation</h2>
+  <p class="section-sub" data-reveal data-reveal-delay="2">Limited to 100 spots. First come, first served. All plans include full program access.</p>
+  <div class="pricing-grid">
+    <div class="price-card" data-reveal>
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">₹4,999</div>
+      <div class="price-period">one-time payment</div>
+      <ul class="price-features">
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>100-day program access</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Workout plans</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Nutrition guide</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Community access</li>
+      </ul>
+      <button class="btn-enroll btn-enroll-light" onclick="openModal('Starter','₹4,999','4999')">Enroll Now</button>
+    </div>
+    <div class="price-card featured" data-reveal data-reveal-delay="1">
+      <div class="featured-badge">Most Popular</div>
+      <div class="price-tier">Transform</div>
+      <div class="price-amount">₹8,999</div>
+      <div class="price-period">one-time payment</div>
+      <ul class="price-features">
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Everything in Starter</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>1-on-1 coaching calls</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Daily accountability check-ins</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Mindset coaching modules</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Priority support</li>
+      </ul>
+      <button class="btn-enroll btn-enroll-dark" onclick="openModal('Transform','₹8,999','8999')">Enroll Now</button>
+    </div>
+    <div class="price-card" data-reveal data-reveal-delay="2">
+      <div class="price-tier">Elite</div>
+      <div class="price-amount">₹14,999</div>
+      <div class="price-period">one-time payment</div>
+      <ul class="price-features">
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Everything in Transform</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Weekly 1-on-1 video calls</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Custom meal plans</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Custom workout programming</li>
+        <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>WhatsApp direct access</li>
+      </ul>
+      <button class="btn-enroll btn-enroll-light" onclick="openModal('Elite','₹14,999','14999')">Enroll Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY FORM -->
+<section class="apply" id="apply">
+  <div class="apply-inner">
+    <p class="section-label" data-reveal>Apply Now</p>
+    <h2 class="section-title" data-reveal data-reveal-delay="1">This Is For The 100% Committed.<br>Are You In? 💪</h2>
+    <p class="section-sub" data-reveal data-reveal-delay="2">Fill in your details. We'll review your application and send you access details via email within 24 hours.</p>
+
+    <div class="apply-form" data-reveal data-reveal-delay="3">
+      <div id="form-success" class="form-success">
+        <h3>🎉 Application Submitted!</h3>
+        <p>We've received your application. Check your email for next steps. Your program materials will be delivered via our automated system within 24 hours.</p>
+      </div>
+      <form id="apply-form" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name</label>
+            <input id="fname" name="firstName" class="form-input" type="text" placeholder="Rohit" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name</label>
+            <input id="lname" name="lastName" class="form-input" type="text" placeholder="Sharma" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input id="email" name="email" class="form-input" type="email" placeholder="you@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone (WhatsApp)</label>
+            <input id="phone" name="phone" class="form-input" type="tel" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="age">Age</label>
+            <input id="age" name="age" class="form-input" type="number" placeholder="28" min="18" max="65" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="city">City</label>
+            <input id="city" name="city" class="form-input" type="text" placeholder="Mumbai" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="goal">What is Your Main Goal?</label>
+          <select id="goal" name="goal" class="form-input" required>
+            <option value="" disabled selected>Select your goal</option>
+            <option>Lose 7–10 KG of fat</option>
+            <option>Get fit and build muscle</option>
+            <option>Fix health issues (BP, sugar, energy)</option>
+            <option>Build consistent healthy habits</option>
+            <option>All of the above</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="plan">Which Plan Are You Interested In?</label>
+          <select id="plan" name="plan" class="form-input" required>
+            <option value="" disabled selected>Select a plan</option>
+            <option>Starter — ₹4,999</option>
+            <option>Transform — ₹8,999</option>
+            <option>Elite — ₹14,999</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="commitment">Why Are You 100% Committed? (Optional)</label>
+          <textarea id="commitment" name="commitment" class="form-input" placeholder="Tell us what's driving your transformation..." rows="3" style="resize:vertical"></textarea>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="consent" required>
+          <label for="consent">I agree to the <a href="#">Terms & Conditions</a> and consent to receiving program updates and emails via Brevo. I understand my data will be securely stored.</label>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">Submit Application →</button>
+      </form>
+      <div class="integrations-note">
+        <div class="int-badge">🔗 Form via Make</div>
+        <div class="int-badge">📧 Email via Brevo</div>
+        <div class="int-badge">💳 Payment via Razorpay</div>
+        <div class="int-badge">📁 Stored on Drive</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon">🎯</div>
+      <h4>100 Spots Only</h4>
+      <p>First come, first served</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🏆</div>
+      <h4>Expert Coaching</h4>
+      <p>Guidance you can trust</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">📈</div>
+      <h4>Results Driven</h4>
+      <p>We get results</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">100<span>.</span>People</div>
+      <p class="footer-desc">A 100-day transformation program for 100% committed men & women who are ready to change — for good.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Program</h5>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#apply">Apply</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 100 People. 100 Days. Real Results. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY CTA -->
+<a href="#apply" class="sticky-cta" id="sticky-cta">
+  <div class="pulse"></div>
+  I'm In — Apply Now · Only 100 Spots
+</a>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3 id="modal-plan-name">Transform Plan</h3>
+      <p>Complete your enrollment securely via Razorpay</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-price">
+        <div class="amount" id="modal-price-display">₹8,999</div>
+        <div class="period">one-time · 100 days</div>
+      </div>
+      <ul style="list-style:none;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.5rem">
+        <li style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#444">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#0D0D0D" stroke-width="2"><polyline points="2,7 5,10 12,3"/></svg>
+          Instant access after payment
+        </li>
+        <li style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#444">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#0D0D0D" stroke-width="2"><polyline points="2,7 5,10 12,3"/></svg>
+          Materials delivered via email (Brevo)
+        </li>
+        <li style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#444">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#0D0D0D" stroke-width="2"><polyline points="2,7 5,10 12,3"/></svg>
+          Files stored in Google Drive
+        </li>
+      </ul>
+      <button class="rzp-btn" onclick="initiateRazorpay()">
+        💳 Pay Securely with Razorpay
+      </button>
+      <div class="secured-note">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#999" stroke-width="1.5"><rect x="2" y="5" width="8" height="6" rx="1"/><path d="M4 5V3.5a2 2 0 014 0V5"/></svg>
+        256-bit SSL secured · UPI, Cards, Net Banking, EMI accepted
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- RAZORPAY SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
