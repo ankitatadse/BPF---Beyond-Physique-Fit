@@ -9,10 +9,17 @@
     BUSINESS_NAME: '100 People. 100 Days. Real Results.',
     BUSINESS_EMAIL: 'hello@100people100days.com',
   };
+// Maps the exact text shown in the "Select a plan" dropdown to the
+// values openModal() needs (must match the pricing card buttons below).
+const PLAN_MAP = {
+  'Starter — ₹4,999': { name: 'Starter', price: '₹4,999', amount: '4999' },
+  'Transform — ₹8,999': { name: 'Transform', price: '₹8,999', amount: '8999' },
+  'Elite — ₹14,999': { name: 'Elite', price: '₹14,999', amount: '14999' },
+};
 
-  // =============================================
-  // SCROLL REVEAL ANIMATION
-  // =============================================
+// =============================================
+// SCROLL REVEAL ANIMATION
+// =============================================
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -141,6 +148,8 @@ async function initiateRazorpay() {
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
+          firstName: document.getElementById('fname') ? document.getElementById('fname').value : '',
+          email: document.getElementById('email') ? document.getElementById('email').value : '',
           plan: currentPlan.name,
           amount: currentPlan.price,
           timestamp: new Date().toISOString(),
@@ -227,11 +236,19 @@ async function submitForm(e) {
   // → Log in Google Sheets database
   await sendToMake(formData);
 
-  // Show success state
+  // Show success state briefly, then carry them straight into payment
+  // for the plan they selected — don't leave them stranded here.
   document.getElementById('apply-form').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
   btn.disabled = false;
   btn.textContent = 'Submit Application →';
+
+  const selectedPlan = PLAN_MAP[formData.plan];
+  if (selectedPlan) {
+    setTimeout(() => {
+      openModal(selectedPlan.name, selectedPlan.price, selectedPlan.amount);
+    }, 1500); // brief pause so they see the "submitted" confirmation first
+  }
 }
 
 // =============================================
