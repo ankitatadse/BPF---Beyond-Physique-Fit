@@ -6,8 +6,8 @@
     RAZORPAY_KEY_ID: 'rzp_test_T51uJnCFnhJDxf',  // Replace with your Razorpay Key ID
     MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/9s4a6xiy23uq5h8dhhcs1gjs19vlqsji',  // Replace with your Make.com webhook URL
     BREVO_SENDER_NAME: '100 People. 100 Days.',
-    BUSINESS_NAME: '100 People. 100 Days. Real Results.',
-    BUSINESS_EMAIL: 'hello@100people100days.com',
+    BUSINESS_NAME: 'Beyond Physique Fit',
+    BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
   };
 
   // Maps the exact text shown in the "Select a plan" dropdown to the
