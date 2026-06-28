@@ -20,7 +20,6 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#apply">Apply</a></li>
   </ul>
-  <a href="#apply" class="nav-cta">I'm In → Apply Now</a>
   <button class="hamburger" onclick="toggleMenu(this)" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -208,7 +207,7 @@
         <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Nutrition guide</li>
         <li><svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>Community access</li>
       </ul>
-      <button class="btn-enroll btn-enroll-light" onclick="openModal('100 Days','₹999','999')">Enroll Now</button>
+      <button class="btn-enroll btn-enroll-light"onclick="selectPlan('100 Days','₹999')"> Enroll Now</button>
     </div>
     <div class="price-card featured" data-reveal data-reveal-delay="1">
       <div class="featured-badge">most popular</div>
@@ -398,11 +397,20 @@
 </footer>
 
 <!-- STICKY CTA -->
-<a href="#apply" class="sticky-cta" id="sticky-cta">
-  <div class="pulse"></div>
-  I'm In — Apply Now · Only 100 Spots
-</a>
-
+<div class="floating-cta-wrapper">
+    <a href="#apply" class="floating-cta">
+        <span class="shine"></span>
+        <span class="floating-text">
+            🔥 I'M IN — APPLY NOW
+        </span>
+    </a>
+</div>
+<div class="floating-cta-wrapper">
+    <a href="#apply" class="floating-cta">
+        <span class="shine"></span>
+        <span class="floating-cta__text">🔥 I'M IN — APPLY NOW</span>
+    </a>
+</div>
 <!-- PAYMENT MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal">
@@ -445,6 +453,6 @@
 <!-- RAZORPAY SDK -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="script.js"></script>
-
+<div class="particles"></div>
 </body>
 </html>

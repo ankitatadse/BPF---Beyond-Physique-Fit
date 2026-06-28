@@ -1146,43 +1146,6 @@ footer {
   text-decoration: none
 }
 
-/* STICKY CTA */
-.sticky-cta {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 90;
-  background: var(--ink);
-  color: var(--white);
-  padding: 0.875rem 2rem;
-  border-radius: 100px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-  transition: var(--transition);
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem
-}
-
-.sticky-cta:hover {
-  background: var(--ink-mid);
-  transform: translateX(-50%) translateY(-2px)
-}
-
-.sticky-cta .pulse {
-  width: 8px;
-  height: 8px;
-  background: #FF4D4D;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite
-}
-
 /* ANIMATIONS */
 [data-reveal] {
   opacity: 0;
@@ -1439,4 +1402,177 @@ footer {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3rem;
   letter-spacing: 0.1em
+}
+/* ===========================================
+   Premium Floating CTA
+=========================================== */
+
+.floating-cta-wrapper{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%);
+    z-index:9999;
+}
+
+.floating-cta{
+
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-width:360px;
+    height:62px;
+
+    padding:0 36px;
+
+    border-radius:999px;
+
+    background:#CFFF04;
+
+    color:#092B2B;
+
+    font-size:18px;
+
+    font-weight:800;
+
+    text-decoration:none;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 10px 30px rgba(207,255,4,.22);
+
+    transition:
+    box-shadow .3s ease,
+    transform .3s ease;
+
+    animation:
+    floatCTA 3.2s ease-in-out infinite,
+    glowCTA 2.4s ease-in-out infinite;
+}
+
+.floating-cta:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:
+    0 15px 40px rgba(207,255,4,.35);
+
+}
+
+.floating-text{
+
+    position:relative;
+
+    z-index:2;
+
+    letter-spacing:.5px;
+
+}
+
+.shine{
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:40%;
+
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.8),
+        transparent
+    );
+
+    transform:skewX(-20deg);
+
+    animation:shineCTA 2.6s linear infinite;
+
+}
+
+@keyframes shineCTA{
+
+0%{
+
+left:-120%;
+
+}
+
+100%{
+
+left:140%;
+
+}
+
+}
+
+@keyframes glowCTA{
+
+0%{
+
+box-shadow:
+0 10px 25px rgba(207,255,4,.18);
+
+}
+
+50%{
+
+box-shadow:
+0 14px 40px rgba(207,255,4,.34);
+
+}
+
+100%{
+
+box-shadow:
+0 10px 25px rgba(207,255,4,.18);
+
+}
+
+}
+
+@keyframes floatCTA{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-5px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+@media (max-width:768px){
+
+.floating-cta{
+
+min-width:300px;
+
+height:56px;
+
+font-size:16px;
+
+padding:0 24px;
+
+}
+
 }

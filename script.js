@@ -267,6 +267,27 @@
       }, 1500); // brief pause so they see the "submitted" confirmation first
     }
   }
+const particles=document.querySelector('.particles');
+
+setInterval(()=>{
+
+const p=document.createElement('span');
+
+p.style.left=Math.random()*80+'px';
+
+p.style.bottom='0px';
+
+p.style.animationDuration=(2+Math.random()*2)+'s';
+
+particles.appendChild(p);
+
+setTimeout(()=>{
+
+p.remove();
+
+},4000);
+
+},300);
 
   // =============================================
   // INTEGRATION SETUP NOTES (for developer)
