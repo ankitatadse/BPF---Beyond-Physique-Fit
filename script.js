@@ -181,7 +181,7 @@ async function initiateRazorpay() {
           razorpay_signature: response.razorpay_signature,
           // Plan info
           plan: currentPlan.name,
-          amount: currentPlan.price,
+          amount: currentPlan.amount, // sends "999" (number only)
           // Full form data (all user attributes for Brevo)
           firstName: currentFormData.firstName || '',
           lastName: currentFormData.lastName || '',
