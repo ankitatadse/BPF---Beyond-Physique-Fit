@@ -167,9 +167,19 @@
             amount: currentPlan.price,
             timestamp: new Date().toISOString(),
           };
-          sendToMake({ type: 'payment_success', ...paymentData });
-          closeModal();
-          alert('✅ Payment Successful! Check your email for program access.');
+         sendToMake({ type: 'payment_success', ...paymentData });
+         closeModal();
+         if (currentPlan.name === '100 Days') {
+         // ₹999 plan — fully handled by the email automation
+         alert('✅ Payment Successful! Check your email for program access.');
+         } else {
+         // 6/12 month plans — redirect to WhatsApp for manual onboarding
+         const waNumber = '917028444813'; // <-- replace with YOUR WhatsApp business number (country code, no + or spaces)
+         const waMessage = encodeURIComponent(
+         `Hi! I just paid for the ${currentPlan.name} plan (${currentPlan.price}). My name is ${paymentData.firstName}, email: ${paymentData.email}. Looking forward to getting started!`
+         );
+         window.location.href = `https://wa.me/${waNumber}?text=${waMessage}`;
+         }
         } catch (err) {
           console.error('Verification request failed:', err);
           alert('⚠️ Could not confirm your payment. If money was deducted, contact support with your payment ID: ' + response.razorpay_payment_id);
