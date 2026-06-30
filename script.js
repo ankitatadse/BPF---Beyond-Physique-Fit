@@ -48,10 +48,21 @@ if (stickyCta) {
 // =============================================
 const planSelect = document.getElementById('plan');
 const planPriceDisplay = document.getElementById('plan-price-display');
+const premiumFieldsRow = document.getElementById('premium-fields-row');
+const weightInput = document.getElementById('weight');
+const heightInput = document.getElementById('height');
 if (planSelect && planPriceDisplay) {
   planSelect.addEventListener('change', () => {
     const selected = PLAN_MAP[planSelect.value];
     planPriceDisplay.textContent = selected ? `Amount to be paid: ${selected.price}` : '';
+
+    // Show Weight/Height only for 6 & 12 Month plans (₹999 plan journey stays unchanged)
+    const isPremium = selected && selected.name !== '100 Days';
+    if (premiumFieldsRow) {
+      premiumFieldsRow.style.display = isPremium ? 'grid' : 'none';
+      if (weightInput) weightInput.required = isPremium;
+      if (heightInput) heightInput.required = isPremium;
+    }
   });
 }
 
@@ -86,10 +97,7 @@ function selectPlan(planName, priceDisplay) {
   const planDropdown = document.getElementById('plan');
   if (planDropdown && planKey) {
     planDropdown.value = planKey;
-    // Trigger the price display update
-    if (planPriceDisplay) {
-      planPriceDisplay.textContent = `Amount to be paid: ${priceDisplay}`;
-    }
+    planDropdown.dispatchEvent(new Event('change'));
   }
 
   // Scroll smoothly to the apply form
@@ -189,6 +197,8 @@ async function initiateRazorpay() {
           phone: currentFormData.phone || '',
           age: currentFormData.age || '',
           city: currentFormData.city || '',
+          weight: currentFormData.weight || '',
+          height: currentFormData.height || '',
           gender: currentFormData.gender || '',           // → GENDER in Brevo
           foodPreference: currentFormData.foodPreference || '', // → FOOD_PREFERENCE in Brevo
           workoutType: currentFormData.workoutType || '', // → WORKOUT_TYPE in Brevo
@@ -211,12 +221,15 @@ async function initiateRazorpay() {
           `;
           document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         } else {
-          // 6/12 month plans — redirect to WhatsApp
-          const waNumber = '917028444813';
-          const waMessage = encodeURIComponent(
-            `Hi! I just paid for the ${currentPlan.name} plan (${currentPlan.price}). My name is ${paymentData.firstName}, email: ${paymentData.email}. Looking forward to getting started!`
-          );
-          window.location.href = `https://wa.me/${waNumber}?text=${waMessage}`;
+          // 6/12 month plans — confirmation handled automatically via WhatsApp (Make.com + AiSensy)
+          document.getElementById('apply-form').style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+          document.getElementById('form-success').innerHTML = `
+            <h3>✅ Payment Successful!</h3>
+            <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+            You'll receive a confirmation message on WhatsApp shortly with your registration details. Our coaching team will reach out with next steps.</p>
+          `;
+          document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         }
 
       } catch (err) {
@@ -268,6 +281,20 @@ async function sendToMake(data) {
 // =============================================
 async function submitForm(e) {
   e.preventDefault();
+  const form = document.getElementById('apply-form');
+
+  // Final safety check before submitting (in case someone reached step 3 with
+  // an invalid value left behind via browser back/forward, autofill, etc.)
+  const invalidField = form.querySelector(':invalid');
+  if (invalidField) {
+    const stepEl = invalidField.closest('.step-panel');
+    if (stepEl && window.goToWizardStep) {
+      window.goToWizardStep(parseInt(stepEl.dataset.step));
+    }
+    invalidField.reportValidity();
+    return;
+  }
+
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = 'Submitting...';
@@ -280,6 +307,8 @@ async function submitForm(e) {
     phone:          document.getElementById('phone').value.trim(),
     age:            document.getElementById('age').value.trim(),
     city:           document.getElementById('city').value.trim(),
+    weight:         document.getElementById('weight').value.trim(),
+    height:         document.getElementById('height').value.trim(),
     gender:         document.getElementById('gender').value,        // Male / Female
     foodPreference: document.getElementById('foodPreference').value, // Veg / Non-Veg
     workoutType:    document.getElementById('workoutType').value,    // Home Workout / Gym Workout
@@ -319,3 +348,192 @@ if (particles) {
     setTimeout(() => { p.remove(); }, 4000);
   }, 300);
 }
+// =============================================
+// TESTIMONIALS CAROUSEL
+// =============================================
+const resultsTrack = document.getElementById('results-track');
+const carouselDotsWrap = document.getElementById('carousel-dots');
+
+if (resultsTrack && carouselDotsWrap) {
+  const cards = Array.from(resultsTrack.children);
+
+  // Build dots
+  cards.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+    dot.addEventListener('click', () => scrollToCard(i));
+    carouselDotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(carouselDotsWrap.children);
+
+  function getCardStep() {
+    // Distance to scroll = one card width + the track's gap
+    const gap = parseFloat(getComputedStyle(resultsTrack).gap) || 0;
+    return cards[0].getBoundingClientRect().width + gap;
+  }
+
+  function scrollToCard(index) {
+    const clamped = Math.max(0, Math.min(index, cards.length - 1));
+    resultsTrack.scrollTo({ left: clamped * getCardStep(), behavior: 'smooth' });
+  }
+
+  window.moveCarousel = function(direction) {
+    const step = getCardStep();
+    const nextLeft = resultsTrack.scrollLeft + direction * step;
+    resultsTrack.scrollTo({ left: nextLeft, behavior: 'smooth' });
+  };
+
+  // Keep dots in sync with manual scroll/swipe
+  let scrollTimeout;
+  resultsTrack.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const step = getCardStep();
+      const activeIndex = Math.round(resultsTrack.scrollLeft / step);
+      dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+    }, 100);
+  });
+
+  // Auto-advance every 5s, pausing on hover/touch
+  let autoplay = setInterval(() => {
+    const atEnd = resultsTrack.scrollLeft + resultsTrack.clientWidth >= resultsTrack.scrollWidth - 10;
+    atEnd ? scrollToCard(0) : window.moveCarousel(1);
+  }, 5000);
+  const wrapper = resultsTrack.closest('.carousel-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', () => clearInterval(autoplay));
+    wrapper.addEventListener('touchstart', () => clearInterval(autoplay), { passive: true });
+  }
+}
+// =============================================
+// MULTISTEP APPLY FORM LOGIC
+// Append this to the END of your existing script.js
+// (does not touch or redefine any existing functions —
+//  submitForm(), sendToMake(), openModal() etc. stay untouched)
+// =============================================
+
+(function() {
+  let currentStep = 1;
+  const totalSteps = 3;
+
+  const segs = {
+    1: document.getElementById('seg-1'),
+    2: document.getElementById('seg-2'),
+    3: document.getElementById('seg-3'),
+  };
+  const progressText = document.getElementById('progress-text');
+  const progressPct = document.getElementById('progress-pct');
+  const btnNext = document.getElementById('btn-next');
+  const btnBack = document.getElementById('btn-back');
+  const submitBtn = document.getElementById('submit-btn');
+
+  // Guard — only run this logic if the multistep form is actually on the page
+  if (!btnNext || !btnBack || !submitBtn) return;
+
+  // Sync pill taps to their hidden <select> so submitForm() needs zero changes
+  document.querySelectorAll('.pill-group').forEach(group => {
+    const targetId = group.dataset.syncs;
+    const select = document.getElementById(targetId);
+    if (!select) return;
+    group.addEventListener('click', (e) => {
+      const opt = e.target.closest('.pill-option');
+      if (!opt) return;
+      group.querySelectorAll('.pill-option').forEach(p => p.classList.remove('selected'));
+      opt.classList.add('selected');
+      select.value = opt.dataset.value;
+    });
+  });
+
+  // Plan price preview banner on step 3
+  const PLAN_PREVIEW = {
+    '100 Days — ₹999':      { name: '100 Days Plan', price: '₹999' },
+    '6 Months — ₹14,999':  { name: '6 Months Plan', price: '₹14,999' },
+    '12 Months — ₹19,999': { name: '12 Months Plan', price: '₹19,999' },
+  };
+
+  const planSelect = document.getElementById('plan');
+  if (planSelect) {
+    planSelect.addEventListener('change', function() {
+      const sel = PLAN_PREVIEW[this.value];
+      const banner = document.getElementById('apply-plan-banner');
+      if (!banner) return;
+      if (sel) {
+        document.getElementById('pb-name').textContent = sel.name;
+        document.getElementById('pb-price').textContent = sel.price;
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    });
+  }
+
+  function fieldsValidForStep(step) {
+    const panel = document.querySelector(`.step-panel[data-step="${step}"]`);
+    if (!panel) return true;
+    const inputs = panel.querySelectorAll('input[required], select[required]');
+    for (const el of inputs) {
+      if (!el.checkValidity()) {
+        el.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function updateProgress() {
+    for (let i = 1; i <= totalSteps; i++) {
+      if (!segs[i]) continue;
+      segs[i].classList.remove('active', 'done');
+      if (i < currentStep) segs[i].classList.add('done');
+      else if (i === currentStep) segs[i].classList.add('active');
+    }
+    if (progressText) progressText.textContent = `Step ${currentStep} of ${totalSteps}`;
+    if (progressPct) progressPct.textContent = Math.round((currentStep / totalSteps) * 100) + '%';
+  }
+
+  function showStep(step) {
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+    const target = document.querySelector(`.step-panel[data-step="${step}"]`);
+    if (target) target.classList.add('active');
+
+    btnBack.style.display = step === 1 ? 'none' : 'block';
+
+    if (step === totalSteps) {
+      btnNext.style.display = 'none';
+      submitBtn.style.display = 'block';
+    } else {
+      btnNext.style.display = 'block';
+      submitBtn.style.display = 'none';
+    }
+
+    updateProgress();
+
+    const card = document.querySelector('.step-card');
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  btnNext.addEventListener('click', () => {
+    if (!fieldsValidForStep(currentStep)) return;
+    if (currentStep < totalSteps) {
+      currentStep++;
+      showStep(currentStep);
+    }
+  });
+
+  btnBack.addEventListener('click', () => {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  });
+
+  // Expose a minimal hook so submitForm() can jump to an invalid step if needed
+  window.goToWizardStep = function(step) {
+    currentStep = step;
+    showStep(step);
+  };
+
+  // Initialize on first load
+  showStep(1);
+})();

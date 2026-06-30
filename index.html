@@ -15,7 +15,6 @@
 <nav>
   <div class="nav-logo">BPF Beyond PHysique Fit<span></div>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#apply">Apply</a></li>
@@ -32,7 +31,7 @@
     <h1 class="hero-headline" data-reveal data-reveal-delay="1">
       100<br>People.<br><span class="accent">100 Days.</span><br>Real Results.
     </h1>
-    <p class="hero-sub" data-reveal data-reveal-delay="2">A 100-day transformation program for 100% committed men & women who are ready to change — for good.</p>
+    <p class="hero-sub" data-reveal data-reveal-delay="2">A 100-day transformation program for 100% committed men & women who are ready to change for good.</p>
     <div class="hero-badges" data-reveal data-reveal-delay="3">
       <div class="hero-badge">
         <svg viewBox="0 0 16 16"><path d="M8 1l1.5 3h3.5l-2.8 2.1 1 3.3L8 7.6l-3.2 1.8 1-3.3L3 4h3.5z"/></svg>
@@ -49,9 +48,6 @@
     </div>
     <div class="hero-btns" data-reveal data-reveal-delay="4">
       <a href="#apply" class="btn-primary">I'm In — Apply Now</a>
-      <a href="#about" class="btn-outline">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/><polygon points="7,6 13,9 7,12" fill="currentColor" stroke="none"/></svg>
-        See How It Works
       </a>
     </div>
   </div>
@@ -71,17 +67,13 @@
         <div class="stat-label">Days Program</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">500+</div>
+        <div class="stat-num">100+</div>
         <div class="stat-label">Alumni</div>
       </div>
       <div class="stat-card">
         <div class="stat-num">4.9★</div>
         <div class="stat-label">Avg. Rating</div>
       </div>
-    </div>
-    <div class="spots-badge" data-reveal data-reveal-delay="3">
-      <div class="spots-num">100</div>
-      <div class="spots-label">Limited<br>People</div>
     </div>
   </div>
 </section>
@@ -106,87 +98,87 @@
   </div>
 </div>
 
-<!-- WHAT YOU'LL GET -->
-<section class="outcomes" id="about">
-  <p class="section-label" data-reveal>What You'll Get</p>
-  <h2 class="section-title" data-reveal data-reveal-delay="1">Simple. Sustainable.<br>Transformational.</h2>
-  <div class="outcomes-grid">
-    <div class="outcome-card" data-reveal>
-      <div class="outcome-icon">
-        <svg viewBox="0 0 28 28">
-          <path d="M4 14h6m14 0h-6m-8 0a6 6 0 0112 0 6 6 0 01-12 0z" />
-          <path d="M10 14V10m8 4v-4" />
-        </svg>
-      </div>
-      <div class="outcome-title">Shed 7–10 KG</div>
-    </div>
-    <div class="outcome-card" data-reveal data-reveal-delay="1">
-      <div class="outcome-icon">
-        <svg viewBox="0 0 28 28">
-          <path d="M6 18l4-8 4 6 4-10 4 12" />
-        </svg>
-      </div>
-      <div class="outcome-title">Get Fit</div>
-    </div>
-    <div class="outcome-card" data-reveal data-reveal-delay="2">
-      <div class="outcome-icon">
-        <svg viewBox="0 0 28 28">
-          <path d="M14 4a8 8 0 110 16A8 8 0 0114 4z" />
-          <path d="M14 12v4m0-8v.5" />
-        </svg>
-      </div>
-      <div class="outcome-title">Fix Health Issues</div>
-    </div>
-    <div class="outcome-card" data-reveal data-reveal-delay="3">
-      <div class="outcome-icon">
-        <svg viewBox="0 0 28 28">
-          <path d="M6 8l4 4-4 4m8 0h8" />
-        </svg>
-      </div>
-      <div class="outcome-title">No Boring Diets</div>
-    </div>
-  </div>
-</section>
-
 <!-- REAL RESULTS -->
 <section class="results" id="results">
   <p class="section-label" data-reveal>Real People. Real Results.</p>
   <h2 class="section-title" data-reveal data-reveal-delay="1">What Our Members Say</h2>
-  <div class="results-grid">
-    <div class="result-card" data-reveal>
-      <div class="result-img">
-        <div class="img-placeholder">ROHIT</div>
-        <div class="result-badge">−8<span>KG</span></div>
+
+  <div class="carousel-wrapper" data-reveal data-reveal-delay="2">
+    <button class="carousel-arrow carousel-arrow-prev" onclick="moveCarousel(-1)" aria-label="Previous testimonial">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 4l-6 6 6 6"/></svg>
+    </button>
+
+    <div class="results-track" id="results-track">
+      <div class="result-card">
+        <div class="result-img">
+          <div class="ba-split">
+            <div class="ba-half">
+              <img src="images/rohit-before.jpg" alt="Rohit before transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">BEFORE</span>
+            </div>
+            <div class="ba-half">
+              <img src="images/rohit-after.jpg" alt="Rohit after transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">AFTER</span>
+            </div>
+          </div>
+          <div class="result-badge">−8<span>KG</span></div>
+        </div>
+        <div class="result-body">
+          <div class="result-stars">★★★★★</div>
+          <p class="result-quote">"I've never been this consistent. Lost 8kg and gained real confidence in just 100 days."</p>
+          <div class="result-name">— Rohit, 28</div>
+        </div>
       </div>
-      <div class="result-body">
-        <div class="result-stars">★★★★★</div>
-        <p class="result-quote">"I've never been this consistent. Lost 8kg and gained real confidence in just 100 days."</p>
-        <div class="result-name">— Rohit, 28</div>
+
+      <div class="result-card">
+        <div class="result-img">
+          <div class="ba-split">
+            <div class="ba-half">
+              <img src="images/priya-before.jpg" alt="Priya before transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">BEFORE</span>
+            </div>
+            <div class="ba-half">
+              <img src="images/priya-after.jpg" alt="Priya after transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">AFTER</span>
+            </div>
+          </div>
+          <div class="result-badge">−10<span>KG</span></div>
+        </div>
+        <div class="result-body">
+          <div class="result-stars">★★★★★</div>
+          <p class="result-quote">"Stronger, healthier and happier. This program completely changed my life and mindset."</p>
+          <div class="result-name">— Priya, 32</div>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-img">
+          <div class="ba-split">
+            <div class="ba-half">
+              <img src="images/arjun-before.jpg" alt="Arjun before transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">BEFORE</span>
+            </div>
+            <div class="ba-half">
+              <img src="images/arjun-after.jpg" alt="Arjun after transformation" onerror="this.style.display='none'; this.parentElement.classList.add('ba-placeholder')">
+              <span class="ba-label">AFTER</span>
+            </div>
+          </div>
+          <div class="result-badge">−9<span>KG</span></div>
+        </div>
+        <div class="result-body">
+          <div class="result-stars">★★★★★</div>
+          <p class="result-quote">"Real workouts. Real food. Real results. No fluff, just accountability that actually works."</p>
+          <div class="result-name">— Arjun, 30</div>
+        </div>
       </div>
     </div>
-    <div class="result-card" data-reveal data-reveal-delay="1">
-      <div class="result-img">
-        <div class="img-placeholder">PRIYA</div>
-        <div class="result-badge">−10<span>KG</span></div>
-      </div>
-      <div class="result-body">
-        <div class="result-stars">★★★★★</div>
-        <p class="result-quote">"Stronger, healthier and happier. This program completely changed my life and mindset."</p>
-        <div class="result-name">— Priya, 32</div>
-      </div>
-    </div>
-    <div class="result-card" data-reveal data-reveal-delay="2">
-      <div class="result-img">
-        <div class="img-placeholder">ARJUN</div>
-        <div class="result-badge">−9<span>KG</span></div>
-      </div>
-      <div class="result-body">
-        <div class="result-stars">★★★★★</div>
-        <p class="result-quote">"Real workouts. Real food. Real results. No fluff, just accountability that actually works."</p>
-        <div class="result-name">— Arjun, 30</div>
-      </div>
-    </div>
+
+    <button class="carousel-arrow carousel-arrow-next" onclick="moveCarousel(1)" aria-label="Next testimonial">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 4l6 6-6 6"/></svg>
+    </button>
   </div>
+
+  <div class="carousel-dots" id="carousel-dots"></div>
 </section>
 
 <!-- PRICING -->
@@ -241,128 +233,193 @@
   </div>
 </section>
 
-<!-- APPLY FORM -->
-<section class="apply" id="apply">
-  <div class="apply-inner">
-    <p class="section-label" data-reveal>Apply Now</p>
-    <h2 class="section-title" data-reveal data-reveal-delay="1">Ready To Become The Best Version Of Yourself?</h2>
-    <p class="section-sub" data-reveal data-reveal-delay="2">Fill in your details. We'll review your application and send you access details via email within 24 hours.</p>
+<!-- =========================================================
+     BPF APPLY FORM — Multi-step, mobile-first redesign
+========================================================= -->
+<section id="apply" class="apply-section" data-reveal>
+  <div class="apply-wrap">
 
-    <div class="apply-form" data-reveal data-reveal-delay="3">
-      <div id="form-success" class="form-success">
-        <h3>🎉 Application Submitted!</h3>
-        <p>We've received your application. Check your email for next steps. Your program materials will be delivered via our automated system within 24 hours.</p>
-      </div>
-      <form id="apply-form" onsubmit="submitForm(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="fname">First Name</label>
-            <input id="fname" name="firstName" class="form-input" type="text" placeholder="Rohit" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lname">Last Name</label>
-            <input id="lname" name="lastName" class="form-input" type="text" placeholder="Sharma" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="email">Email Address</label>
-            <input id="email" name="email" class="form-input" type="email" placeholder="you@email.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="phone">Phone (WhatsApp)</label>
-            <input id="phone" name="phone" class="form-input" type="tel" placeholder="+91 98765 43210" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="age">Age</label>
-            <input id="age" name="age" class="form-input" type="number" placeholder="28" min="18" max="65" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="city">City</label>
-            <input id="city" name="city" class="form-input" type="text" placeholder="Mumbai" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="gender">Gender</label>
-            <select id="gender" name="gender" class="form-input" required>
-              <option value="" disabled selected>Select gender</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="foodPreference">Food Preference</label>
-            <select id="foodPreference" name="foodPreference" class="form-input" required>
-              <option value="" disabled selected>Select food preference</option>
-              <option>Veg</option>
-              <option>Non-Veg</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="workoutType">Preferred Workout Type</label>
-          <select id="workoutType" name="workoutType" class="form-input" required>
-            <option value="" disabled selected>Select workout type</option>
-            <option>Home Workout</option>
-            <option>Gym Workout</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="goal">What is Your Main Goal?</label>
-          <select id="goal" name="goal" class="form-input" required>
-            <option value="" disabled selected>Select your goal</option>
-            <option>Lose 7–10 KG of fat</option>
-            <option>Get fit and build muscle</option>
-            <option>Fix health issues (BP, sugar, energy)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="plan">Which Plan Are You Interested In?</label>
-          <select id="plan" name="plan" class="form-input" required>
-            <option value="" disabled selected>Select a plan</option>
-            <option value="100 Days — ₹999">100 Days — ₹9,999 → ₹999 (90% OFF 🔥)</option>
-            <option value="6 Months — ₹14,999">6 Months — ₹14,999</option>
-            <option value="12 Months — ₹19,999">12 Months — ₹19,999</option>
-          </select>
-          <p id="plan-price-display" style="margin-top:8px;font-weight:600;color:var(--ink)"></p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="commitment">Why Are You 100% Committed? (Optional)</label>
-          <textarea id="commitment" name="commitment" class="form-input" placeholder="Tell us what's driving your transformation..." rows="3" style="resize:vertical"></textarea>
-        </div>
-        <div class="form-check">
-          <input type="checkbox" id="consent" required>
-          <label for="consent">I agree to the <a href="#">Terms & Conditions</a> and consent to receiving program updates and emails via Brevo. I understand my data will be securely stored.</label>
-        </div>
-        <button type="submit" class="submit-btn" id="submit-btn">Submit Application →</button>
-      </form>
+    <div class="apply-header">
+      <div class="eyebrow">Apply Now</div>
+      <h2>Ready to become the<br>best version of yourself?</h2>
+      <p>Takes less than a minute. 3 quick steps.</p>
     </div>
+
+    <!-- Success state (unchanged behaviour, just restyled) -->
+    <div id="form-success" class="form-success-box" style="display:none;">
+      <h3>🎉 Application Submitted!</h3>
+      <p>We've received your application. Check your email for next steps. Your program materials will be delivered via our automated system.</p>
+    </div>
+
+    <form id="apply-form" class="multistep-form" onsubmit="submitForm(event)" novalidate>
+
+      <div class="progress-label">
+        <span id="progress-text">Step 1 of 3</span>
+        <span class="current" id="progress-pct">33%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-seg active" id="seg-1"></div>
+        <div class="progress-seg" id="seg-2"></div>
+        <div class="progress-seg" id="seg-3"></div>
+      </div>
+
+      <div class="step-card">
+
+        <!-- STEP 1 -->
+        <div class="step-panel active" data-step="1">
+          <div class="step-title">Let's get to know you</div>
+          <div class="step-sub">Just the basics — takes 20 seconds</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="fname">First name</label>
+              <input type="text" id="fname" placeholder="Rohit" required>
+            </div>
+            <div class="field">
+              <label for="lname">Last name</label>
+              <input type="text" id="lname" placeholder="Sharma" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="you@email.com" required>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone (WhatsApp)</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" data-step="2">
+          <div class="step-title">About you</div>
+          <div class="step-sub">Helps us build your exact plan</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="number" id="age" placeholder="28" required>
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" placeholder="Mumbai" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender" class="hidden-select" required>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <div class="pill-group" data-syncs="gender">
+              <div class="pill-option" data-value="Male">Male</div>
+              <div class="pill-option" data-value="Female">Female</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Food preference</label>
+            <select id="foodPreference" class="hidden-select" required>
+              <option value="">Select food preference</option>
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+            </select>
+            <div class="pill-group" data-syncs="foodPreference">
+              <div class="pill-option" data-value="Veg">Veg</div>
+              <div class="pill-option" data-value="Non-Veg">Non-Veg</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Preferred workout</label>
+            <select id="workoutType" class="hidden-select" required>
+              <option value="">Select workout type</option>
+              <option value="Home Workout">Home Workout</option>
+              <option value="Gym Workout">Gym Workout</option>
+            </select>
+            <div class="pill-group" data-syncs="workoutType">
+              <div class="pill-option" data-value="Home Workout">Home</div>
+              <div class="pill-option" data-value="Gym Workout">Gym</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" data-step="3">
+          <div class="step-title">Almost there 🔥</div>
+          <div class="step-sub">Pick your goal and your plan</div>
+
+          <div class="field">
+            <label for="goal">Main goal</label>
+            <select id="goal" class="hidden-select" required>
+              <option value="">Select your goal</option>
+              <option value="Lose 7–10 KG of fat">Lose 7–10 KG of fat</option>
+              <option value="Get fit and build muscle">Get fit and build muscle</option>
+              <option value="Fix health issues (BP, sugar, energy)">Fix health issues (BP, sugar, energy)</option>
+            </select>
+            <div class="pill-group pill-group-vertical" data-syncs="goal">
+              <div class="pill-option" data-value="Lose 7–10 KG of fat">Lose 7–10 KG of fat</div>
+              <div class="pill-option" data-value="Get fit and build muscle">Get fit and build muscle</div>
+              <div class="pill-option" data-value="Fix health issues (BP, sugar, energy)">Fix health issues (BP, sugar, energy)</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="plan">Choose your plan</label>
+            <select id="plan" required>
+              <option value="">Select a plan</option>
+              <option value="100 Days — ₹999">100 Days — ₹9,999 → ₹999 (90% OFF 🔥)</option>
+              <option value="6 Months — ₹14,999">6 Months — ₹14,999</option>
+              <option value="12 Months — ₹19,999">12 Months — ₹19,999</option>
+            </select>
+          </div>
+
+          <div class="plan-banner" id="apply-plan-banner" style="display:none;">
+            <div class="pb-name" id="pb-name"></div>
+            <div class="pb-price" id="pb-price"></div>
+          </div>
+          <!-- kept for compatibility with existing script.js price display logic -->
+          <div id="plan-price-display" style="display:none;"></div>
+
+          <!-- Weight/Height — only required for 6/12 Month plans (₹999 plan journey unchanged) -->
+          <div class="field-row" id="premium-fields-row" style="display:none;">
+            <div class="field">
+              <label for="weight">Weight (kg)</label>
+              <input type="number" id="weight" placeholder="75">
+            </div>
+            <div class="field">
+              <label for="height">Height (cm)</label>
+              <input type="number" id="height" placeholder="175">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="commitment">Why are you 100% committed? <span class="optional">(Optional)</span></label>
+            <input type="text" id="commitment" placeholder="In one sentence...">
+          </div>
+
+          <div class="consent-row">
+            <input type="checkbox" id="consent" required>
+            <label for="consent">I agree to the <a href="#">Terms &amp; Conditions</a> and consent to receiving program updates via email.</label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button type="button" class="btn btn-back" id="btn-back" style="display:none;">Back</button>
+          <button type="button" class="btn btn-next" id="btn-next">Continue →</button>
+          <button type="submit" class="btn btn-next" id="submit-btn" style="display:none;">Apply Now 🔥</button>
+        </div>
+      </div>
+
+      <div class="mobile-hint">🔒 Your information is safe and never shared</div>
+    </form>
+
   </div>
 </section>
-
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-inner">
-    <div class="trust-item">
-      <div class="trust-icon">🎯</div>
-      <h4>100 Spots Only</h4>
-      <p>First come, first served</p>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">🏆</div>
-      <h4>Expert Coaching</h4>
-      <p>Guidance you can trust</p>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">📈</div>
-      <h4>Results Driven</h4>
-      <p>We get results</p>
-    </div>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <footer>
@@ -374,7 +431,6 @@
     <div class="footer-col">
       <h5>Program</h5>
       <ul>
-        <li><a href="#about">About</a></li>
         <li><a href="#results">Results</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#apply">Apply</a></li>
