@@ -303,20 +303,20 @@ nav {
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   width: 100%;
-  max-width: 340px
+  max-width: 420px
 }
 
 .stat-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.75rem 1.5rem;
   backdrop-filter: blur(8px)
 }
 
 .stat-num {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 3rem;
+  font-size: clamp(2.75rem, 3vw, 3.5rem);
   color: var(--lime);
   line-height: 1
 }
@@ -828,6 +828,7 @@ nav {
   padding: 2.5rem 2rem;
   text-align: left;
   position: relative;
+  background: var(--white);
   transition: var(--transition)
 }
 
@@ -837,10 +838,22 @@ nav {
   box-shadow: 0 20px 50px rgba(207, 255, 4, 0.18)
 }
 
-.price-card.featured {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--white)
+.price-card-highlight {
+  border: 2px solid var(--lime);
+  box-shadow: 0 0 0 1px var(--lime), 0 0 32px rgba(207, 255, 4, 0.45), 0 20px 50px rgba(207, 255, 4, 0.2);
+  padding: 2.75rem 2.25rem
+}
+
+.price-card-highlight:hover {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 1px var(--lime), 0 0 40px rgba(207, 255, 4, 0.55), 0 24px 60px rgba(207, 255, 4, 0.25)
+}
+
+.price-tagline {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.5;
+  margin-bottom: 0.5rem
 }
 
 .featured-badge {
@@ -850,7 +863,7 @@ nav {
   right: 0;
   transform: none;
   display: block;
-  background: var(--lime);
+  background: var(--offwhite);
   color: var(--ink);
   font-size: 0.85rem;
   font-weight: 700;
@@ -858,10 +871,16 @@ nav {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 0.75rem 1rem;
-  border-radius: 8px 8px 0 0;
+  border-radius: 14px 14px 0 0;
   white-space: normal;
   overflow: visible;
   line-height: 1.2;
+}
+
+.featured-badge-lime {
+  background: var(--lime);
+  color: var(--ink);
+  border-radius: 12px 12px 0 0
 }
 
 .price-tier {
@@ -870,11 +889,7 @@ nav {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-mid);
-  margin-bottom: 1rem
-}
-
-.price-card.featured .price-tier {
-  color: var(--lime-soft)
+  margin-bottom: 0.5rem
 }
 
 .price-amount {
@@ -885,18 +900,10 @@ nav {
   margin-bottom: 0.25rem
 }
 
-.price-card.featured .price-amount {
-  color: var(--white)
-}
-
 .price-period {
   font-size: 0.85rem;
   color: var(--gray);
   margin-bottom: 2rem
-}
-
-.price-card.featured .price-period {
-  color: rgba(255, 255, 255, 0.6)
 }
 
 .price-features {
@@ -915,10 +922,6 @@ nav {
   color: var(--black)
 }
 
-.price-card.featured .price-features li {
-  color: rgba(255, 255, 255, 0.85)
-}
-
 .price-features li svg {
   width: 16px;
   height: 16px;
@@ -926,10 +929,6 @@ nav {
   stroke-width: 2;
   fill: none;
   flex-shrink: 0
-}
-
-.price-card.featured .price-features li svg {
-  stroke: var(--lime)
 }
 
 .btn-enroll {
@@ -1406,6 +1405,58 @@ footer {
 }
 
 /* RESPONSIVE */
+@media(min-width:1200px) {
+  .hero {
+    gap: 6rem;
+    padding: 140px 6% 100px
+  }
+
+  .hero-stats {
+    max-width: 480px;
+    gap: 1.75rem
+  }
+
+  .stat-card {
+    padding: 2rem 1.75rem
+  }
+
+  .stat-label {
+    font-size: 0.8rem
+  }
+}
+
+@media(min-width:900px) {
+  .apply-wrap {
+    max-width: 600px
+  }
+
+  .step-card {
+    padding: 32px 36px
+  }
+
+  .apply-header h2 {
+    font-size: clamp(34px, 3.4vw, 44px)
+  }
+}
+
+@media(min-width:1200px) {
+  .apply-wrap {
+    max-width: 680px
+  }
+
+  .step-card {
+    padding: 40px 48px
+  }
+
+  .field-row {
+    gap: 20px
+  }
+
+  .step-title {
+    font-size: 24px
+  }
+}
+
 @media(max-width:900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1479,12 +1530,21 @@ footer {
   }
 
   .result-card {
-    flex: 0 0 85%
+    flex: 0 0 82%;
+    min-width: 0
+  }
+
+  .carousel-wrapper {
+    gap: 0.5rem
   }
 
   .carousel-arrow {
-    width: 38px;
-    height: 38px
+    width: 36px;
+    height: 36px
+  }
+
+  .results-track {
+    gap: 1rem
   }
 
   .footer-inner {
