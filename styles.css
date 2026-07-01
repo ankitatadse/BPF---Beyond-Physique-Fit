@@ -2191,3 +2191,6 @@ select.hidden-select {
   .field-row { grid-template-columns: 1fr; }
   .step-card { padding: 20px 16px; }
 }
+.floating-cta-wrapper {
+  transition: opacity 0.3s ease;
+}

@@ -1,3 +1,11 @@
+// Force landing page to always start at top, ignoring any #hash on load
+if (window.location.hash) {
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+}
+window.addEventListener('load', () => {
+  window.scrollTo(0, 0);
+});
+
 // =============================================
 // CONFIGURATION
 // =============================================
@@ -28,19 +36,19 @@ document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 // =============================================
 // STICKY CTA HIDE/SHOW
 // =============================================
-const stickyCta = document.getElementById('sticky-cta');
+// =============================================
+// STICKY CTA HIDE/SHOW
+// =============================================
+const stickyCta = document.querySelector('.floating-cta-wrapper');
 if (stickyCta) {
-  window.addEventListener('scroll', () => {
-    const applySection = document.getElementById('apply');
-    const applyRect = applySection.getBoundingClientRect();
-    if (applyRect.top < window.innerHeight && applyRect.bottom > 0) {
-      stickyCta.style.opacity = '0';
-      stickyCta.style.pointerEvents = 'none';
-    } else {
-      stickyCta.style.opacity = '1';
-      stickyCta.style.pointerEvents = 'auto';
-    }
-  });
+  const applySection = document.getElementById('apply');
+  const ctaObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      stickyCta.style.opacity = entry.isIntersecting ? '0' : '1';
+      stickyCta.style.pointerEvents = entry.isIntersecting ? 'none' : 'auto';
+    });
+  }, { threshold: 0.1 });
+  if (applySection) ctaObserver.observe(applySection);
 }
 
 // =============================================
