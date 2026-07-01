@@ -274,7 +274,7 @@ async function initiateRazorpay() {
 // =============================================
 async function sendToMake(data) {
   try {
-    await fetch(CONFIG.MAKE_WEBHOOK_URL, {
+    await fetch('https://hook.eu1.make.com/9s4a6xiy23uq5h8dhhcs1gjs19vlqsji', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
