@@ -11,7 +11,7 @@ window.addEventListener('load', () => {
 // =============================================
 const CONFIG = {
   RAZORPAY_KEY_ID: 'rzp_test_T51uJnCFnhJDxf',
-  MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/9s4a6xiy23uq5h8dhhcs1gjs19vlqsji',
+  MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb',
   BREVO_SENDER_NAME: '100 People. 100 Days.',
   BUSINESS_NAME: 'Beyond Physique Fit',
   BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
@@ -274,7 +274,7 @@ async function initiateRazorpay() {
 // =============================================
 async function sendToMake(data) {
   try {
-    await fetch('https://hook.eu1.make.com/9s4a6xiy23uq5h8dhhcs1gjs19vlqsji', {
+    await fetch('https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
