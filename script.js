@@ -351,12 +351,21 @@ Email: ${currentFormData.email}
 
 Looking forward to getting started! 💪`;
 
-      const waNumber = '917028444813'; // ← replace with BPF's WhatsApp number (91 + 10 digits, no spaces)
-      const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
-      window.open(waURL, '_blank');
-    }
-  }, 1500);
-}
+  const waNumber = '919XXXXXXXXX'; // ← replace with BPF WhatsApp number
+  const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+
+  document.getElementById('apply-form').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('form-success').innerHTML = `
+    <h3>✅ Payment Successful!</h3>
+    <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+    WhatsApp is opening with your details — send the message to our team to complete your enrollment.</p>
+  `;
+  document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+
+  setTimeout(() => {
+    window.open(waURL, '_blank');
+  }, 1000);
 }
 
 // =============================================
