@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById("popup-close");
     const skipBtn = document.getElementById("popup-skip");
     const joinBtn = document.getElementById("popup-join");
+    const stickyCta = document.querySelector('.floating-cta-wrapper');
 
     if (!overlay) return;
 
@@ -17,6 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 800);
     });
 
+    function showStickyCta() {
+        if (stickyCta) {
+            stickyCta.classList.add('visible');
+        }
+    }
+
     function closePopup() {
 
         overlay.style.opacity = "0";
@@ -25,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             overlay.style.display = "none";
             overlay.style.opacity = "1";
+            showStickyCta();
         }, 300);
 
     }
