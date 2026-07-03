@@ -41,6 +41,7 @@ if (stickyCta) {
   const applySection = document.getElementById('apply');
   const ctaObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+      if (!stickyCta.classList.contains('visible')) return;
       stickyCta.style.opacity = entry.isIntersecting ? '0' : '1';
       stickyCta.style.pointerEvents = entry.isIntersecting ? 'none' : 'auto';
     });

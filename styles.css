@@ -857,14 +857,14 @@ nav {
 }
 
 .price-card-highlight {
-  border: 2px solid var(--lime);
-  box-shadow: 0 0 0 1px var(--lime), 0 0 32px rgba(207, 255, 4, 0.45), 0 20px 50px rgba(207, 255, 4, 0.2);
+  border: 2px solid var(--ink);
+  box-shadow: 0 0 0 1px var(--ink), 0 0 32px rgba(8, 50, 52, 0.45), 0 20px 50px rgba(8, 50, 52, 0.2);
   padding: 2.75rem 2.25rem
 }
-
+ 
 .price-card-highlight:hover {
-  border-color: var(--lime);
-  box-shadow: 0 0 0 1px var(--lime), 0 0 40px rgba(207, 255, 4, 0.55), 0 24px 60px rgba(207, 255, 4, 0.25)
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink), 0 0 20px rgba(8, 50, 52, 0.55), 0 24px 60px rgba(8, 50, 52, 0.25)
 }
 
 .price-tagline {
@@ -1628,6 +1628,14 @@ footer {
     bottom:28px;
     transform:translateX(-50%);
     z-index:9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+.floating-cta-wrapper.visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .floating-cta{
@@ -2226,4 +2234,257 @@ select.hidden-select {
 }
 .floating-cta-wrapper {
   transition: opacity 0.3s ease;
+}/* ==========================================================
+   LAUNCH POPUP
+========================================================== */
+
+.launch-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: popupFadeIn 0.4s ease;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.launch-popup {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+
+    background: var(--ink);
+    border: 1.5px solid rgba(207, 255, 4, 0.25);
+    border-radius: 20px;
+
+    animation: popupSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popupSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Close Button */
+
+.launch-popup-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 10;
+}
+
+.launch-popup-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Top Banner */
+
+.launch-popup-top {
+    padding: 1rem 1.5rem 0.75rem;
+    background: var(--lime);
+    text-align: center;
+}
+
+.popup-eyebrow {
+    margin-bottom: 0.25rem;
+
+    color: var(--ink);
+    opacity: 0.7;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.popup-offer {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+}
+
+/* Body */
+
+.launch-popup-body {
+    padding: 2rem 2rem 2.25rem;
+    text-align: center;
+}
+
+/* Trophy */
+
+.popup-trophy {
+    display: block;
+    margin-bottom: 0.75rem;
+
+    font-size: 3.5rem;
+    animation: trophyBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes trophyBounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Headline */
+
+.popup-headline {
+    margin-bottom: 0.5rem;
+
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+
+    color: var(--white);
+}
+
+.popup-headline span {
+    color: var(--lime);
+}
+
+/* Description */
+
+.popup-sub {
+    max-width: 300px;
+    margin: 0 auto 1.75rem;
+
+    font-size: 0.85rem;
+    line-height: 1.6;
+
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Prize Badges */
+
+.popup-prizes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    margin-bottom: 1.75rem;
+}
+
+.popup-prize-badge {
+    padding: 0.45rem 1rem;
+
+    background: rgba(207, 255, 4, 0.08);
+    border: 1px solid rgba(207, 255, 4, 0.3);
+    border-radius: 30px;
+
+    color: var(--lime);
+
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+/* Join Button */
+
+.popup-join-btn {
+    position: relative;
+    overflow: hidden;
+
+    display: block;
+    width: 100%;
+    padding: 1rem;
+
+    background: var(--lime);
+    color: var(--ink);
+
+    border: none;
+    border-radius: 10px;
+
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow: 0 8px 24px rgba(207, 255, 4, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popup-join-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(207, 255, 4, 0.38);
+}
+
+/* Skip Button */
+
+.popup-skip {
+    width: 100%;
+    margin-top: 1rem;
+
+    background: none;
+    border: none;
+
+    color: rgba(255, 255, 255, 0.3);
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-decoration: underline;
+
+    cursor: pointer;
+}
+
+.popup-skip:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    .launch-popup {
+        border-radius: 16px;
+    }
+
+    .launch-popup-body {
+        padding: 1.5rem 1.25rem 1.75rem;
+    }
 }
