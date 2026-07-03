@@ -332,7 +332,7 @@ async function submitForm(e) {
   };
 
   btn.disabled = false;
-  btn.textContent = 'Submit Application →';
+  btn.textContent = 'Submit & Pay';
 
   // Route to payment based on plan
   const selectedPlan = PLAN_MAP[currentFormData.plan];

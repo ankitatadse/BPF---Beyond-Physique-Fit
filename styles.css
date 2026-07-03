@@ -58,12 +58,26 @@ nav {
   display: flex;
   align-items: center;
   line-height: 1;
+  max-width: 220px;
 }
 
 .nav-logo img {
   display: block;
-  height: 42px;
+  height: 52px;
   width: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 900px) {
+  .nav-logo img {
+    height: 46px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-logo img {
+    height: 40px;
+  }
 }
 
 .nav-links {
@@ -1187,7 +1201,22 @@ footer {
   font-size: 2rem;
   color: var(--white);
   letter-spacing: 0.04em;
-  margin-bottom: 1rem
+  margin-bottom: 1rem;
+  max-width: 220px;
+}
+
+.footer-logo img {
+  display: block;
+  height: 44px;
+  width: auto;
+  max-width: 100%;
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+  .footer-logo img {
+    height: 38px;
+  }
 }
 
 .footer-logo span {
