@@ -511,8 +511,7 @@
               <polyline points="3,8 6,11 13,4" />
             </svg>Plan Revisions Every 4 Weeks</li>
         </ul>
-        <button class="btn-enroll btn-enroll-light" onclick="openModal('6 Months','₹14,999','14999')">Enroll
-          Now</button>
+        <button class="btn-enroll btn-enroll-light" onclick="selectPlan('6 Months','₹14,999')">Enroll Now</button>
       </div>
       <div class="price-card" data-reveal data-reveal-delay="2">
         <div class="price-tier">12 Months</div>
@@ -539,8 +538,7 @@
               <polyline points="3,8 6,11 13,4" />
             </svg>Monthly Zoom Call</li>
         </ul>
-        <button class="btn-enroll btn-enroll-light" onclick="openModal('12 Months','₹19,999','19999')">Enroll
-          Now</button>
+        <button class="btn-enroll btn-enroll-light" onclick="selectPlan('12 Months','₹19,999')">Enroll Now</button>
       </div>
     </div>
   </section>
@@ -700,7 +698,7 @@
             <div id="plan-price-display" style="display:none;"></div>
 
             <!-- Weight/Height — only required for 6/12 Month plans (₹999 plan journey unchanged) -->
-            <div class="field-row" id="premium-fields-row" style="display:none;">
+            <div class="field-row" id="premium-fields-row">
               <div class="field">
                 <label for="weight">Weight (kg)</label>
                 <input type="number" id="weight" placeholder="75">
@@ -709,6 +707,10 @@
                 <label for="height">Height (cm)</label>
                 <input type="number" id="height" placeholder="175">
               </div>
+            </div>
+            <div class="field">
+            <label for="medical">Medical conditions <span class="optional">(if any)</span></label>
+            <input type="text" id="medical" placeholder="e.g. Diabetes, BP, Thyroid or None">
             </div>
 
             <div class="field">

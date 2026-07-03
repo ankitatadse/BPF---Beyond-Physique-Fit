@@ -63,14 +63,6 @@ if (planSelect && planPriceDisplay) {
   planSelect.addEventListener('change', () => {
     const selected = PLAN_MAP[planSelect.value];
     planPriceDisplay.textContent = selected ? `Amount to be paid: ${selected.price}` : '';
-
-    // Show Weight/Height only for 6 & 12 Month plans (₹999 plan journey stays unchanged)
-    const isPremium = selected && selected.name !== '100 Days';
-    if (premiumFieldsRow) {
-      premiumFieldsRow.style.display = isPremium ? 'grid' : 'none';
-      if (weightInput) weightInput.required = isPremium;
-      if (heightInput) heightInput.required = isPremium;
-    }
   });
 }
 
@@ -317,11 +309,12 @@ async function submitForm(e) {
     city:           document.getElementById('city').value.trim(),
     weight:         document.getElementById('weight').value.trim(),
     height:         document.getElementById('height').value.trim(),
-    gender:         document.getElementById('gender').value,        // Male / Female
-    foodPreference: document.getElementById('foodPreference').value, // Veg / Non-Veg
-    workoutType:    document.getElementById('workoutType').value,    // Home Workout / Gym Workout
+    gender:         document.getElementById('gender').value,
+    foodPreference: document.getElementById('foodPreference').value,
+    workoutType:    document.getElementById('workoutType').value,
     goal:           document.getElementById('goal').value,
     plan:           document.getElementById('plan').value,
+    medical:        document.getElementById('medical') ? document.getElementById('medical').value.trim() : '',
     commitment:     document.getElementById('commitment').value.trim(),
     submittedAt:    new Date().toISOString(),
     source:         'website-apply-form',
@@ -335,11 +328,35 @@ async function submitForm(e) {
 
   // After 1.5s — open the payment modal for their chosen plan
   const selectedPlan = PLAN_MAP[currentFormData.plan];
-  if (selectedPlan) {
-    setTimeout(() => {
+if (selectedPlan) {
+  setTimeout(() => {
+    if (selectedPlan.name === '100 Days') {
+      // ₹999 plan — open Razorpay payment modal
       openModal(selectedPlan.name, selectedPlan.price, selectedPlan.amount);
-    }, 1500);
-  }
+    } else {
+      // 6 or 12 Month plan — redirect to WhatsApp with pre-filled message
+      const planLabel = selectedPlan.name === '6 Months' ? '6 Months Transformation Plan (₹14,999)' : '12 Months Transformation Plan (₹19,999)';
+      const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
+
+Name: ${currentFormData.firstName} ${currentFormData.lastName}
+Age: ${currentFormData.age}
+Gender: ${currentFormData.gender}
+Height: ${currentFormData.height} cm
+Weight: ${currentFormData.weight} kg
+Goal: ${currentFormData.goal}
+Medical Conditions: ${currentFormData.medical || 'None'}
+City: ${currentFormData.city}
+Phone Number: ${currentFormData.phone}
+Email: ${currentFormData.email}
+
+Looking forward to getting started! 💪`;
+
+      const waNumber = '917028444813'; // ← replace with BPF's WhatsApp number (91 + 10 digits, no spaces)
+      const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+      window.open(waURL, '_blank');
+    }
+  }, 1500);
+}
 }
 
 // =============================================
