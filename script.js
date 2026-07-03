@@ -36,9 +36,6 @@ document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 // =============================================
 // STICKY CTA HIDE/SHOW
 // =============================================
-// =============================================
-// STICKY CTA HIDE/SHOW
-// =============================================
 const stickyCta = document.querySelector('.floating-cta-wrapper');
 if (stickyCta) {
   const applySection = document.getElementById('apply');
@@ -56,9 +53,6 @@ if (stickyCta) {
 // =============================================
 const planSelect = document.getElementById('plan');
 const planPriceDisplay = document.getElementById('plan-price-display');
-const premiumFieldsRow = document.getElementById('premium-fields-row');
-const weightInput = document.getElementById('weight');
-const heightInput = document.getElementById('height');
 if (planSelect && planPriceDisplay) {
   planSelect.addEventListener('change', () => {
     const selected = PLAN_MAP[planSelect.value];
@@ -86,21 +80,16 @@ function toggleMenu(btn) {
 }
 
 // =============================================
-// SELECT PLAN FROM PRICING CARD (₹999 button)
-// — scrolls to form and pre-selects the plan
+// SELECT PLAN FROM PRICING CARD
+// scrolls to form and pre-selects the plan
 // =============================================
 function selectPlan(planName, priceDisplay) {
-  // Find the matching plan key in the dropdown
   const planKey = Object.keys(PLAN_MAP).find(k => PLAN_MAP[k].name === planName);
-
-  // Pre-select the plan in the apply form dropdown
   const planDropdown = document.getElementById('plan');
   if (planDropdown && planKey) {
     planDropdown.value = planKey;
     planDropdown.dispatchEvent(new Event('change'));
   }
-
-  // Scroll smoothly to the apply form
   document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -108,7 +97,7 @@ function selectPlan(planName, priceDisplay) {
 // PAYMENT MODAL
 // =============================================
 let currentPlan = { name: '', price: '', amount: 0 };
-let currentFormData = {}; // store form data for use after payment
+let currentFormData = {};
 
 function openModal(planName, priceDisplay, amountInPaise) {
   currentPlan = { name: planName, price: priceDisplay, amount: parseInt(amountInPaise) * 100 };
@@ -180,17 +169,14 @@ async function initiateRazorpay() {
           return;
         }
 
-        // ✅ Payment verified — send ALL form data + payment data to Make.com
+        // Payment verified — send to Make.com
         const paymentData = {
           type: 'payment_success',
-          // Payment info
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
-          // Plan info
           plan: currentPlan.name,
-          amount: currentPlan.amount, // sends "999" (number only)
-          // Full form data (all user attributes for Brevo)
+          amount: currentPlan.amount,
           firstName: currentFormData.firstName || '',
           lastName: currentFormData.lastName || '',
           email: currentFormData.email || '',
@@ -199,10 +185,11 @@ async function initiateRazorpay() {
           city: currentFormData.city || '',
           weight: currentFormData.weight || '',
           height: currentFormData.height || '',
-          gender: currentFormData.gender || '',           // → GENDER in Brevo
-          foodPreference: currentFormData.foodPreference || '', // → FOOD_PREFERENCE in Brevo
-          workoutType: currentFormData.workoutType || '', // → WORKOUT_TYPE in Brevo
+          gender: currentFormData.gender || '',
+          foodPreference: currentFormData.foodPreference || '',
+          workoutType: currentFormData.workoutType || '',
           goal: currentFormData.goal || '',
+          medical: currentFormData.medical || '',
           commitment: currentFormData.commitment || '',
           timestamp: new Date().toISOString(),
         };
@@ -211,7 +198,7 @@ async function initiateRazorpay() {
         closeModal();
 
         if (currentPlan.name === '100 Days') {
-          // ₹999 plan — fully handled by Brevo email automation
+          // ₹999 plan — Brevo handles emails
           document.getElementById('apply-form').style.display = 'none';
           document.getElementById('form-success').style.display = 'block';
           document.getElementById('form-success').innerHTML = `
@@ -220,16 +207,43 @@ async function initiateRazorpay() {
             Check your email — your Welcome, Nutrition Blueprint, and Workout Plan will arrive in the next few minutes.</p>
           `;
           document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+
         } else {
-          // 6/12 month plans — confirmation handled automatically via WhatsApp (Make.com + AiSensy)
+          // 6/12 month — show success then open WhatsApp
+          const planLabel = currentPlan.name === '6 Months'
+            ? '6 Months Transformation Plan (₹14,999)'
+            : '12 Months Transformation Plan (₹19,999)';
+
+          const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
+
+Name: ${currentFormData.firstName} ${currentFormData.lastName}
+Age: ${currentFormData.age}
+Gender: ${currentFormData.gender}
+Height: ${currentFormData.height} cm
+Weight: ${currentFormData.weight} kg
+Goal: ${currentFormData.goal}
+Medical Conditions: ${currentFormData.medical || 'None'}
+City: ${currentFormData.city}
+Phone Number: ${currentFormData.phone}
+Email: ${currentFormData.email}
+
+Looking forward to getting started! 💪`;
+
+          const waNumber = '917028444813'; // ← replace with BPF WhatsApp number (91 + 10 digits)
+          const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+
           document.getElementById('apply-form').style.display = 'none';
           document.getElementById('form-success').style.display = 'block';
           document.getElementById('form-success').innerHTML = `
             <h3>✅ Payment Successful!</h3>
             <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-            You'll receive a confirmation message on WhatsApp shortly with your registration details. Our coaching team will reach out with next steps.</p>
+            WhatsApp is opening with your details pre-filled — send the message to our team to complete your enrollment.</p>
           `;
           document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+
+          setTimeout(() => {
+            window.open(waURL, '_blank');
+          }, 1000);
         }
 
       } catch (err) {
@@ -266,7 +280,7 @@ async function initiateRazorpay() {
 // =============================================
 async function sendToMake(data) {
   try {
-    await fetch('https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb', {
+    await fetch(CONFIG.MAKE_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -283,8 +297,6 @@ async function submitForm(e) {
   e.preventDefault();
   const form = document.getElementById('apply-form');
 
-  // Final safety check before submitting (in case someone reached step 3 with
-  // an invalid value left behind via browser back/forward, autofill, etc.)
   const invalidField = form.querySelector(':invalid');
   if (invalidField) {
     const stepEl = invalidField.closest('.step-panel');
@@ -299,7 +311,6 @@ async function submitForm(e) {
   btn.disabled = true;
   btn.textContent = 'Submitting...';
 
-  // Save form data globally so initiateRazorpay() can access it
   currentFormData = {
     firstName:      document.getElementById('fname').value.trim(),
     lastName:       document.getElementById('lname').value.trim(),
@@ -320,52 +331,16 @@ async function submitForm(e) {
     source:         'website-apply-form',
   };
 
-  // Show submitted message
-  document.getElementById('apply-form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
   btn.disabled = false;
   btn.textContent = 'Submit Application →';
 
-  // After 1.5s — open the payment modal for their chosen plan
+  // Route to payment based on plan
   const selectedPlan = PLAN_MAP[currentFormData.plan];
-if (selectedPlan) {
-  setTimeout(() => {
-    if (selectedPlan.name === '100 Days') {
-      // ₹999 plan — open Razorpay payment modal
+  if (selectedPlan) {
+    setTimeout(() => {
       openModal(selectedPlan.name, selectedPlan.price, selectedPlan.amount);
-    } else {
-      // 6 or 12 Month plan — redirect to WhatsApp with pre-filled message
-      const planLabel = selectedPlan.name === '6 Months' ? '6 Months Transformation Plan (₹14,999)' : '12 Months Transformation Plan (₹19,999)';
-      const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
-
-Name: ${currentFormData.firstName} ${currentFormData.lastName}
-Age: ${currentFormData.age}
-Gender: ${currentFormData.gender}
-Height: ${currentFormData.height} cm
-Weight: ${currentFormData.weight} kg
-Goal: ${currentFormData.goal}
-Medical Conditions: ${currentFormData.medical || 'None'}
-City: ${currentFormData.city}
-Phone Number: ${currentFormData.phone}
-Email: ${currentFormData.email}
-
-Looking forward to getting started! 💪`;
-
-  const waNumber = '919XXXXXXXXX'; // ← replace with BPF WhatsApp number
-  const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
-
-  document.getElementById('apply-form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
-  document.getElementById('form-success').innerHTML = `
-    <h3>✅ Payment Successful!</h3>
-    <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-    WhatsApp is opening with your details — send the message to our team to complete your enrollment.</p>
-  `;
-  document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
-
-  setTimeout(() => {
-    window.open(waURL, '_blank');
-  }, 1000);
+    }, 300);
+  }
 }
 
 // =============================================
@@ -382,6 +357,7 @@ if (particles) {
     setTimeout(() => { p.remove(); }, 4000);
   }, 300);
 }
+
 // =============================================
 // TESTIMONIALS CAROUSEL
 // =============================================
@@ -391,7 +367,6 @@ const carouselDotsWrap = document.getElementById('carousel-dots');
 if (resultsTrack && carouselDotsWrap) {
   const cards = Array.from(resultsTrack.children);
 
-  // Build dots
   cards.forEach((_, i) => {
     const dot = document.createElement('button');
     dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
@@ -402,7 +377,6 @@ if (resultsTrack && carouselDotsWrap) {
   const dots = Array.from(carouselDotsWrap.children);
 
   function getCardStep() {
-    // Distance to scroll = one card width + the track's gap
     const gap = parseFloat(getComputedStyle(resultsTrack).gap) || 0;
     return cards[0].getBoundingClientRect().width + gap;
   }
@@ -418,7 +392,6 @@ if (resultsTrack && carouselDotsWrap) {
     resultsTrack.scrollTo({ left: nextLeft, behavior: 'smooth' });
   };
 
-  // Keep dots in sync with manual scroll/swipe
   let scrollTimeout;
   resultsTrack.addEventListener('scroll', () => {
     clearTimeout(scrollTimeout);
@@ -429,24 +402,21 @@ if (resultsTrack && carouselDotsWrap) {
     }, 100);
   });
 
-  // Auto-advance every 5s, pausing on hover/touch
   let autoplay = setInterval(() => {
     const atEnd = resultsTrack.scrollLeft + resultsTrack.clientWidth >= resultsTrack.scrollWidth - 10;
     atEnd ? scrollToCard(0) : window.moveCarousel(1);
   }, 5000);
+
   const wrapper = resultsTrack.closest('.carousel-wrapper');
   if (wrapper) {
     wrapper.addEventListener('mouseenter', () => clearInterval(autoplay));
     wrapper.addEventListener('touchstart', () => clearInterval(autoplay), { passive: true });
   }
 }
+
 // =============================================
 // MULTISTEP APPLY FORM LOGIC
-// Append this to the END of your existing script.js
-// (does not touch or redefine any existing functions —
-//  submitForm(), sendToMake(), openModal() etc. stay untouched)
 // =============================================
-
 (function() {
   let currentStep = 1;
   const totalSteps = 3;
@@ -462,10 +432,9 @@ if (resultsTrack && carouselDotsWrap) {
   const btnBack = document.getElementById('btn-back');
   const submitBtn = document.getElementById('submit-btn');
 
-  // Guard — only run this logic if the multistep form is actually on the page
   if (!btnNext || !btnBack || !submitBtn) return;
 
-  // Sync pill taps to their hidden <select> so submitForm() needs zero changes
+  // Sync pill taps to hidden <select>
   document.querySelectorAll('.pill-group').forEach(group => {
     const targetId = group.dataset.syncs;
     const select = document.getElementById(targetId);
@@ -486,9 +455,9 @@ if (resultsTrack && carouselDotsWrap) {
     '12 Months — ₹19,999': { name: '12 Months Plan', price: '₹19,999' },
   };
 
-  const planSelect = document.getElementById('plan');
-  if (planSelect) {
-    planSelect.addEventListener('change', function() {
+  const planSelectEl = document.getElementById('plan');
+  if (planSelectEl) {
+    planSelectEl.addEventListener('change', function() {
       const sel = PLAN_PREVIEW[this.value];
       const banner = document.getElementById('apply-plan-banner');
       if (!banner) return;
@@ -562,12 +531,10 @@ if (resultsTrack && carouselDotsWrap) {
     }
   });
 
-  // Expose a minimal hook so submitForm() can jump to an invalid step if needed
   window.goToWizardStep = function(step) {
     currentStep = step;
     showStep(step);
   };
 
-  // Initialize on first load
   showStep(1);
 })();

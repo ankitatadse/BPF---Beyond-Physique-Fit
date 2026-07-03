@@ -517,7 +517,7 @@ nav {
 
 .about-img-main {
   width: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/4;
   background: var(--ink);
   border-radius: 16px;
   overflow: hidden;
@@ -690,7 +690,7 @@ nav {
 }
 
 .result-img {
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   background: linear-gradient(135deg, #0D0D0D, #222222);
   position: relative;
   display: flex;
@@ -720,7 +720,8 @@ nav {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover
+  object-fit: cover;
+  object-position: top
 }
 
 .ba-half.ba-placeholder {
@@ -742,8 +743,11 @@ nav {
 
 .result-badge {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1rem; 
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 2;
   background: var(--ink);
   color: var(--white);
   font-family: 'Bebas Neue', sans-serif;
