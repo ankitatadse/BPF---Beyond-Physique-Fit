@@ -16,6 +16,12 @@ const CONFIG = {
   BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
 };
 
+function showStickyCta() {
+        if (stickyCta) {
+            stickyCta.classList.add('visible');
+        }
+    }
+
 const PLAN_MAP = {
   '100 Days — ₹999':      { name: '100 Days',  price: '₹999',    amount: '999' },
   '6 Months — ₹14,999':  { name: '6 Months',  price: '₹14,999', amount: '14999' },
