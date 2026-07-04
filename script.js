@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
 // CONFIGURATION
 // =============================================
 const CONFIG = {
-  RAZORPAY_KEY_ID: 'rzp_test_T51uJnCFnhJDxf',
+  RAZORPAY_KEY_ID: 'https://rzp.io/rzp/AiNmeQd', // ← replace with your Razorpay Key ID
   MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb',
   BREVO_SENDER_NAME: '100 People. 100 Days.',
   BUSINESS_NAME: 'Beyond Physique Fit',
