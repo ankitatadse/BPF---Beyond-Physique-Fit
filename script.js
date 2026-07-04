@@ -14,9 +14,10 @@ const CONFIG = {
   BREVO_SENDER_NAME: '100 People. 100 Days.',
   BUSINESS_NAME: 'Beyond Physique Fit',
   BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
-  // Public Razorpay Key ID (safe to expose client-side — NOT the secret).
-  // Find it in Razorpay Dashboard > Settings > API Keys.
-  RAZORPAY_KEY_ID: 'rzp_live_REPLACE_WITH_YOUR_KEY_ID',
+  // Razorpay Key ID is no longer hardcoded here — it's fetched at runtime
+  // from /api/config, which reads it from Vercel's environment variables.
+  // This means switching between Test and Live mode only requires updating
+  // RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET in Vercel — no code change needed.
 };
 
 const PLAN_MAP = {
@@ -123,11 +124,24 @@ function closeModalOutside(e) {
 // the Brevo emails) only fire AFTER Razorpay
 // confirms the payment and the signature verifies.
 // =============================================
+let _rzpKeyIdCache = null;
+async function getRazorpayKeyId() {
+  if (_rzpKeyIdCache) return _rzpKeyIdCache;
+  const res = await fetch('/api/config');
+  const data = await res.json();
+  if (!res.ok || !data.key_id) throw new Error(data.error || 'Could not load payment configuration');
+  _rzpKeyIdCache = data.key_id;
+  return _rzpKeyIdCache;
+}
+
 async function initiateRazorpay() {
   const payBtn = document.querySelector('#modal .rzp-btn');
   if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Preparing secure checkout…'; }
 
   try {
+    // 0) Get the current public Key ID (test or live, whatever Vercel has set).
+    const keyId = await getRazorpayKeyId();
+
     // 1) Create a real Razorpay order server-side for the exact plan amount.
     const orderRes = await fetch('/api/create-order', {
       method: 'POST',
@@ -148,7 +162,7 @@ async function initiateRazorpay() {
 
     // 2) Open Razorpay's embedded Checkout (not a new tab / static link).
     const rzp = new Razorpay({
-      key: CONFIG.RAZORPAY_KEY_ID,
+      key: keyId,
       amount: order.amount,
       currency: order.currency,
       name: CONFIG.BUSINESS_NAME,
