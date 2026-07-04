@@ -172,16 +172,12 @@ nav {
   text-transform: uppercase;
   color: var(--lime);
   margin-bottom: 1.5rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem
 }
 
 .hero-eyebrow::before {
-  content: '';
-  width: 32px;
-  height: 2px;
-  background: var(--lime)
+  display: none;
 }
 
 .hero-headline {
@@ -1623,11 +1619,11 @@ footer {
 =========================================== */
 
 .floating-cta-wrapper{
-  position:fixed;
-  left:50%;
-  bottom:28px;
-  transform:translateX(-50%);
-  z-index:10000;
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%);
+    z-index:9999;
     opacity: 0;
     pointer-events: none;
     transition: opacity .3s ease;
@@ -1636,6 +1632,11 @@ footer {
 .floating-cta-wrapper.visible {
     opacity: 1;
     pointer-events: auto;
+}
+
+.floating-cta-wrapper.visible.at-apply {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .floating-cta{
@@ -2239,10 +2240,10 @@ select.hidden-select {
 ========================================================== */
 
 .launch-popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 10005;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2262,7 +2263,7 @@ select.hidden-select {
 .launch-popup {
     position: relative;
     width: 100%;
-    max-width: 420px;
+    max-width: 360px;
     overflow: hidden;
 
     background: var(--ink);
@@ -2316,7 +2317,7 @@ select.hidden-select {
 /* Top Banner */
 
 .launch-popup-top {
-    padding: 1rem 1.5rem 0.75rem;
+    padding: 0.85rem 1.5rem 0.6rem;
     background: var(--lime);
     text-align: center;
 }
@@ -2343,39 +2344,56 @@ select.hidden-select {
 /* Body */
 
 .launch-popup-body {
-    padding: 2rem 2rem 2.25rem;
+    padding: 1.5rem 1.75rem 1.75rem;
     text-align: center;
 }
 
 /* Trophy */
 
-.popup-trophy {
-    display: block;
-    margin-bottom: 0.75rem;
-
-    font-size: 3.5rem;
-    animation: trophyBounce 1.2s ease-in-out infinite;
+.popup-trophy-wrap {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@keyframes trophyBounce {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
+.popup-trophy-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(207, 255, 4, 0.35) 0%, rgba(207, 255, 4, 0.10) 45%, rgba(207, 255, 4, 0) 72%);
+}
 
-    50% {
-        transform: translateY(-6px);
-    }
+.popup-trophy-wrap svg {
+    position: relative;
+    z-index: 2;
+}
+
+.popup-spark {
+    transform-origin: center;
+    animation: sparkTwinkle 2.4s ease-in-out infinite;
+}
+
+.popup-spark.s2 { animation-delay: 0.5s; }
+.popup-spark.s3 { animation-delay: 1s; }
+.popup-spark.s4 { animation-delay: 1.5s; }
+
+@keyframes sparkTwinkle {
+    0%, 100% { opacity: 0.35; transform: scale(0.75); }
+    50% { opacity: 1; transform: scale(1.05); }
 }
 
 /* Headline */
 
 .popup-headline {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 
     font-family: "Bebas Neue", sans-serif;
-    font-size: clamp(1.8rem, 6vw, 2.4rem);
-    line-height: 1.05;
+    font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+    line-height: 1.08;
     letter-spacing: 0.02em;
 
     color: var(--white);
@@ -2388,11 +2406,11 @@ select.hidden-select {
 /* Description */
 
 .popup-sub {
-    max-width: 300px;
-    margin: 0 auto 1.75rem;
+    max-width: 280px;
+    margin: 0 auto 1.25rem;
 
-    font-size: 0.85rem;
-    line-height: 1.6;
+    font-size: 0.82rem;
+    line-height: 1.5;
 
     color: rgba(255, 255, 255, 0.55);
 }
@@ -2403,13 +2421,13 @@ select.hidden-select {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .popup-prize-badge {
-    padding: 0.45rem 1rem;
+    padding: 0.4rem 0.85rem;
 
     background: rgba(207, 255, 4, 0.08);
     border: 1px solid rgba(207, 255, 4, 0.3);
@@ -2417,9 +2435,9 @@ select.hidden-select {
 
     color: var(--lime);
 
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
 }
 
 /* Join Button */

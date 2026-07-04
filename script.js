@@ -14,13 +14,10 @@ const CONFIG = {
   BREVO_SENDER_NAME: '100 People. 100 Days.',
   BUSINESS_NAME: 'Beyond Physique Fit',
   BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
+  // Public Razorpay Key ID (safe to expose client-side — NOT the secret).
+  // Find it in Razorpay Dashboard > Settings > API Keys.
+  RAZORPAY_KEY_ID: 'rzp_live_REPLACE_WITH_YOUR_KEY_ID',
 };
-
-function showStickyCta() {
-        if (stickyCta) {
-            stickyCta.classList.add('visible');
-        }
-    }
 
 const PLAN_MAP = {
   '100 Days — ₹999':      { name: '100 Days',  price: '₹999',    amount: '999' },
@@ -46,8 +43,7 @@ if (stickyCta) {
   const applySection = document.getElementById('apply');
   const ctaObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      stickyCta.style.opacity = entry.isIntersecting ? '0' : '1';
-      stickyCta.style.pointerEvents = entry.isIntersecting ? 'none' : 'auto';
+      stickyCta.classList.toggle('at-apply', entry.isIntersecting);
     });
   }, { threshold: 0.1 });
   if (applySection) ctaObserver.observe(applySection);
@@ -121,33 +117,106 @@ function closeModalOutside(e) {
 }
 
 // =============================================
-// RAZORPAY PAYMENT — direct payment link
+// RAZORPAY PAYMENT — real Checkout flow via
+// /api/create-order + /api/verify-payment.
+// Success message + Make webhook (which triggers
+// the Brevo emails) only fire AFTER Razorpay
+// confirms the payment and the signature verifies.
 // =============================================
-function initiateRazorpay() {
-  closeModal();
+async function initiateRazorpay() {
+  const payBtn = document.querySelector('#modal .rzp-btn');
+  if (payBtn) { payBtn.disabled = true; payBtn.textContent = 'Preparing secure checkout…'; }
 
-  const planLinks = {
-    '100 Days':  'https://rzp.io/rzp/AiNmeQd',
-    '6 Months':  'https://rzp.io/rzp/AiNmeQd',
-    '12 Months': 'https://rzp.io/rzp/AiNmeQd',
-  };
+  try {
+    // 1) Create a real Razorpay order server-side for the exact plan amount.
+    const orderRes = await fetch('/api/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: currentPlan.amount, // already in paise
+        currency: 'INR',
+        receipt: `bpf_${currentPlan.name.replace(/\s+/g, '')}_${Date.now()}`,
+      }),
+    });
+    const order = await orderRes.json();
 
-  const link = planLinks[currentPlan.name] || 'https://rzp.io/rzp/AiNmeQd';
-  window.open(link, '_blank');
+    if (!orderRes.ok || !order.order_id) {
+      throw new Error(order.error || 'Could not create order');
+    }
 
-  if (currentPlan.name === '100 Days') {
-    document.getElementById('apply-form').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-    document.getElementById('form-success').innerHTML = `
-      <h3>✅ Redirecting to Payment!</h3>
-      <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-      Complete your payment on the Razorpay page. Your Welcome email, Nutrition Blueprint, and Workout Plan will arrive shortly after payment.</p>
-    `;
-    document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+    if (payBtn) { payBtn.disabled = false; payBtn.textContent = '💳 Pay Securely with Razorpay'; }
 
+    // 2) Open Razorpay's embedded Checkout (not a new tab / static link).
+    const rzp = new Razorpay({
+      key: CONFIG.RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: CONFIG.BUSINESS_NAME,
+      description: `${currentPlan.name} Plan`,
+      order_id: order.order_id,
+      prefill: {
+        name: `${currentFormData.firstName || ''} ${currentFormData.lastName || ''}`.trim(),
+        email: currentFormData.email || '',
+        contact: currentFormData.phone || '',
+      },
+      theme: { color: '#083234' },
+      handler: async function (response) {
+        await handleConfirmedPayment(response, order);
+      },
+      modal: {
+        ondismiss: function () {
+          // User closed the checkout without paying — do NOT show a success
+          // message and do NOT notify Make. Just re-enable the button.
+          if (payBtn) { payBtn.disabled = false; payBtn.textContent = '💳 Pay Securely with Razorpay'; }
+        },
+      },
+    });
+
+    rzp.on('payment.failed', function (response) {
+      alert('Payment failed: ' + (response.error && response.error.description ? response.error.description : 'Please try again.'));
+    });
+
+    closeModal();
+    rzp.open();
+
+  } catch (err) {
+    console.error('Razorpay init error:', err);
+    if (payBtn) { payBtn.disabled = false; payBtn.textContent = '💳 Pay Securely with Razorpay'; }
+    alert('Something went wrong starting the payment. Please try again in a moment.');
+  }
+}
+
+// =============================================
+// POST-PAYMENT: verify signature server-side,
+// THEN (and only then) notify Make.com and show
+// the success UI / WhatsApp redirect.
+// =============================================
+async function handleConfirmedPayment(response, order) {
+  try {
+    const verifyRes = await fetch('/api/verify-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      }),
+    });
+    const verification = await verifyRes.json();
+
+    if (!verifyRes.ok || !verification.valid) {
+      alert('We could not verify your payment. If money was deducted, please contact us at ' + CONFIG.BUSINESS_EMAIL + ' with your payment ID: ' + response.razorpay_payment_id);
+      return;
+    }
+
+    // Payment is confirmed genuine — now (and only now) log it + trigger emails.
     sendToMake({
-      type: 'payment_initiated',
+      type: 'payment_success',
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_signature: response.razorpay_signature,
       plan: currentPlan.name,
+      amount: (order.amount / 100).toString(),
       firstName: currentFormData.firstName || '',
       lastName: currentFormData.lastName || '',
       email: currentFormData.email || '',
@@ -165,13 +234,22 @@ function initiateRazorpay() {
       timestamp: new Date().toISOString(),
     });
 
-  } else {
-    // 6 / 12 month — open WhatsApp after payment redirect
-    const planLabel = currentPlan.name === '6 Months'
-      ? '6 Months Transformation Plan (₹14,999)'
-      : '12 Months Transformation Plan (₹19,999)';
+    document.getElementById('apply-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
 
-    const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
+    if (currentPlan.name === '100 Days') {
+      document.getElementById('form-success').innerHTML = `
+        <h3>✅ Payment Successful!</h3>
+        <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+        Your Welcome email, Nutrition Blueprint, and Workout Plan will arrive in your inbox shortly.</p>
+      `;
+      document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      const planLabel = currentPlan.name === '6 Months'
+        ? '6 Months Transformation Plan (₹14,999)'
+        : '12 Months Transformation Plan (₹19,999)';
+
+      const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
 
 Name: ${currentFormData.firstName} ${currentFormData.lastName}
 Age: ${currentFormData.age}
@@ -183,24 +261,26 @@ Medical Conditions: ${currentFormData.medical || 'None'}
 City: ${currentFormData.city}
 Phone Number: ${currentFormData.phone}
 Email: ${currentFormData.email}
+Payment ID: ${response.razorpay_payment_id}
 
 Looking forward to getting started! 💪`;
 
-    const waNumber = '917028444813';
-    const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+      const waNumber = '917028444813';
+      const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
 
-    document.getElementById('apply-form').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-    document.getElementById('form-success').innerHTML = `
-      <h3>✅ Redirecting to Payment!</h3>
-      <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-      Complete your payment on the Razorpay page. WhatsApp will open automatically with your details pre-filled.</p>
-    `;
-    document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('form-success').innerHTML = `
+        <h3>✅ Payment Successful!</h3>
+        <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+        Opening WhatsApp now so our coach can get your plan started.</p>
+      `;
+      document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
 
-    setTimeout(() => {
-      window.open(waURL, '_blank');
-    }, 2000);
+      setTimeout(() => { window.open(waURL, '_blank'); }, 1200);
+    }
+
+  } catch (err) {
+    console.error('Post-payment handling error:', err);
+    alert('Your payment went through, but we hit an error finishing setup. Please contact us at ' + CONFIG.BUSINESS_EMAIL + ' with payment ID: ' + response.razorpay_payment_id);
   }
 }
 
