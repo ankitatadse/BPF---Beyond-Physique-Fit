@@ -10,7 +10,6 @@ window.addEventListener('load', () => {
 // CONFIGURATION
 // =============================================
 const CONFIG = {
-  RAZORPAY_KEY_ID: 'https://rzp.io/rzp/AiNmeQd', // ← replace with your Razorpay Key ID
   MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb',
   BREVO_SENDER_NAME: '100 People. 100 Days.',
   BUSINESS_NAME: 'Beyond Physique Fit',
@@ -41,7 +40,6 @@ if (stickyCta) {
   const applySection = document.getElementById('apply');
   const ctaObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!stickyCta.classList.contains('visible')) return;
       stickyCta.style.opacity = entry.isIntersecting ? '0' : '1';
       stickyCta.style.pointerEvents = entry.isIntersecting ? 'none' : 'auto';
     });
@@ -82,7 +80,6 @@ function toggleMenu(btn) {
 
 // =============================================
 // SELECT PLAN FROM PRICING CARD
-// scrolls to form and pre-selects the plan
 // =============================================
 function selectPlan(planName, priceDisplay) {
   const planKey = Object.keys(PLAN_MAP).find(k => PLAN_MAP[k].name === planName);
@@ -118,104 +115,57 @@ function closeModalOutside(e) {
 }
 
 // =============================================
-// RAZORPAY PAYMENT
+// RAZORPAY PAYMENT — direct payment link
 // =============================================
-async function initiateRazorpay() {
-  const submitBtn = document.querySelector('.modal-pay-btn, .rzp-btn');
-  if (submitBtn) submitBtn.disabled = true;
+function initiateRazorpay() {
+  closeModal();
 
-  let order;
-  try {
-    const orderRes = await fetch('/api/create-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        amount: currentPlan.amount,
-        currency: 'INR',
-        receipt: 'receipt_' + Date.now(),
-      }),
+  const planLinks = {
+    '100 Days':  'https://rzp.io/rzp/AiNmeQd',
+    '6 Months':  'https://rzp.io/rzp/AiNmeQd',
+    '12 Months': 'https://rzp.io/rzp/AiNmeQd',
+  };
+
+  const link = planLinks[currentPlan.name] || 'https://rzp.io/rzp/AiNmeQd';
+  window.open(link, '_blank');
+
+  if (currentPlan.name === '100 Days') {
+    document.getElementById('apply-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('form-success').innerHTML = `
+      <h3>✅ Redirecting to Payment!</h3>
+      <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+      Complete your payment on the Razorpay page. Your Welcome email, Nutrition Blueprint, and Workout Plan will arrive shortly after payment.</p>
+    `;
+    document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+
+    sendToMake({
+      type: 'payment_initiated',
+      plan: currentPlan.name,
+      firstName: currentFormData.firstName || '',
+      lastName: currentFormData.lastName || '',
+      email: currentFormData.email || '',
+      phone: currentFormData.phone || '',
+      age: currentFormData.age || '',
+      city: currentFormData.city || '',
+      weight: currentFormData.weight || '',
+      height: currentFormData.height || '',
+      gender: currentFormData.gender || '',
+      foodPreference: currentFormData.foodPreference || '',
+      workoutType: currentFormData.workoutType || '',
+      goal: currentFormData.goal || '',
+      medical: currentFormData.medical || '',
+      commitment: currentFormData.commitment || '',
+      timestamp: new Date().toISOString(),
     });
-    if (!orderRes.ok) throw new Error('Order creation failed');
-    order = await orderRes.json();
-  } catch (err) {
-    console.error('Could not create order:', err);
-    alert('Something went wrong starting your payment. Please try again.');
-    if (submitBtn) submitBtn.disabled = false;
-    return;
-  }
 
-  const options = {
-    key: CONFIG.RAZORPAY_KEY_ID,
-    amount: order.amount,
-    currency: order.currency,
-    order_id: order.order_id,
-    name: CONFIG.BUSINESS_NAME,
-    description: '100 Days Transformation Program — ' + currentPlan.name + ' Plan',
-    image: '',
-    handler: async function(response) {
-      try {
-        const verifyRes = await fetch('/api/verify-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          }),
-        });
-        const verifyData = await verifyRes.json();
+  } else {
+    // 6 / 12 month — open WhatsApp after payment redirect
+    const planLabel = currentPlan.name === '6 Months'
+      ? '6 Months Transformation Plan (₹14,999)'
+      : '12 Months Transformation Plan (₹19,999)';
 
-        if (!verifyRes.ok || !verifyData.valid) {
-          alert('⚠️ Payment could not be verified. If money was deducted, contact support with your payment ID: ' + response.razorpay_payment_id);
-          return;
-        }
-
-        // Payment verified — send to Make.com
-        const paymentData = {
-          type: 'payment_success',
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature,
-          plan: currentPlan.name,
-          amount: currentPlan.amount,
-          firstName: currentFormData.firstName || '',
-          lastName: currentFormData.lastName || '',
-          email: currentFormData.email || '',
-          phone: currentFormData.phone || '',
-          age: currentFormData.age || '',
-          city: currentFormData.city || '',
-          weight: currentFormData.weight || '',
-          height: currentFormData.height || '',
-          gender: currentFormData.gender || '',
-          foodPreference: currentFormData.foodPreference || '',
-          workoutType: currentFormData.workoutType || '',
-          goal: currentFormData.goal || '',
-          medical: currentFormData.medical || '',
-          commitment: currentFormData.commitment || '',
-          timestamp: new Date().toISOString(),
-        };
-
-        await sendToMake(paymentData);
-        closeModal();
-
-        if (currentPlan.name === '100 Days') {
-          // ₹999 plan — Brevo handles emails
-          document.getElementById('apply-form').style.display = 'none';
-          document.getElementById('form-success').style.display = 'block';
-          document.getElementById('form-success').innerHTML = `
-            <h3>✅ Payment Successful!</h3>
-            <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-            Check your email — your Welcome, Nutrition Blueprint, and Workout Plan will arrive in the next few minutes.</p>
-          `;
-          document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
-
-        } else {
-          // 6/12 month — show success then open WhatsApp
-          const planLabel = currentPlan.name === '6 Months'
-            ? '6 Months Transformation Plan (₹14,999)'
-            : '12 Months Transformation Plan (₹19,999)';
-
-          const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
+    const msg = `Hi! I just paid for the ${planLabel}. Here are my details:
 
 Name: ${currentFormData.firstName} ${currentFormData.lastName}
 Age: ${currentFormData.age}
@@ -230,50 +180,22 @@ Email: ${currentFormData.email}
 
 Looking forward to getting started! 💪`;
 
-          const waNumber = '917028444813'; // ← replace with BPF WhatsApp number (91 + 10 digits)
-          const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+    const waNumber = '917028444813';
+    const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
 
-          document.getElementById('apply-form').style.display = 'none';
-          document.getElementById('form-success').style.display = 'block';
-          document.getElementById('form-success').innerHTML = `
-            <h3>✅ Payment Successful!</h3>
-            <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
-            WhatsApp is opening with your details pre-filled — send the message to our team to complete your enrollment.</p>
-          `;
-          document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('apply-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('form-success').innerHTML = `
+      <h3>✅ Redirecting to Payment!</h3>
+      <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
+      Complete your payment on the Razorpay page. WhatsApp will open automatically with your details pre-filled.</p>
+    `;
+    document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
 
-          setTimeout(() => {
-            window.open(waURL, '_blank');
-          }, 1000);
-        }
-
-      } catch (err) {
-        console.error('Verification request failed:', err);
-        alert('⚠️ Could not confirm your payment. If money was deducted, contact support with your payment ID: ' + response.razorpay_payment_id);
-      }
-    },
-    prefill: {
-      name: (currentFormData.firstName || '') + ' ' + (currentFormData.lastName || ''),
-      email: currentFormData.email || '',
-      contact: currentFormData.phone || '',
-    },
-    notes: {
-      program: '100 People 100 Days',
-      plan: currentPlan.name,
-    },
-    theme: { color: '#0D0D0D' },
-    modal: {
-      ondismiss: function() { console.log('Razorpay modal dismissed'); }
-    }
-  };
-
-  const rzp = new Razorpay(options);
-  rzp.on('payment.failed', function(response) {
-    alert('Payment failed: ' + response.error.description + '\nPlease try again.');
-  });
-  rzp.open();
-  closeModal();
-  if (submitBtn) submitBtn.disabled = false;
+    setTimeout(() => {
+      window.open(waURL, '_blank');
+    }, 2000);
+  }
 }
 
 // =============================================
@@ -335,7 +257,6 @@ async function submitForm(e) {
   btn.disabled = false;
   btn.textContent = 'Submit & Pay';
 
-  // Route to payment based on plan
   const selectedPlan = PLAN_MAP[currentFormData.plan];
   if (selectedPlan) {
     setTimeout(() => {
@@ -435,7 +356,6 @@ if (resultsTrack && carouselDotsWrap) {
 
   if (!btnNext || !btnBack || !submitBtn) return;
 
-  // Sync pill taps to hidden <select>
   document.querySelectorAll('.pill-group').forEach(group => {
     const targetId = group.dataset.syncs;
     const select = document.getElementById(targetId);
@@ -449,7 +369,6 @@ if (resultsTrack && carouselDotsWrap) {
     });
   });
 
-  // Plan price preview banner on step 3
   const PLAN_PREVIEW = {
     '100 Days — ₹999':      { name: '100 Days Plan', price: '₹999' },
     '6 Months — ₹14,999':  { name: '6 Months Plan', price: '₹14,999' },
