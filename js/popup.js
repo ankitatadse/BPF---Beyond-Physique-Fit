@@ -1,18 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Set to true to re-enable the cash prize popup later.
+    // Set to true to re-enable the cash prize popup later
+    // (remember: the markup was fully removed from index.html too —
+    // see removed_popup_backup.html — so it needs to be added back
+    // in as well, not just flipped on here).
     const POPUP_ENABLED = false;
 
-    const overlay = document.getElementById("launch-popup-overlay");
-    const closeBtn = document.getElementById("popup-close");
-    const skipBtn = document.getElementById("popup-skip");
-    const joinBtn = document.getElementById("popup-join");
     const stickyCta = document.querySelector('.floating-cta-wrapper');
-
-    if (!overlay) return;
-
-    // Hide initially
-    overlay.style.display = "none";
 
     function showStickyCta() {
         if (stickyCta) {
@@ -20,12 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    if (!POPUP_ENABLED) {
-        // Popup is turned off — show the sticky CTA right away instead of
-        // waiting for a popup close event that will now never happen.
+    const overlay = document.getElementById("launch-popup-overlay");
+
+    if (!POPUP_ENABLED || !overlay) {
+        // Popup is turned off (or its markup isn't present) — show the
+        // sticky CTA right away instead of waiting for a popup close
+        // event that will now never happen.
         showStickyCta();
         return;
     }
+
+    const closeBtn = document.getElementById("popup-close");
+    const skipBtn = document.getElementById("popup-skip");
+    const joinBtn = document.getElementById("popup-join");
+
+    // Hide initially
+    overlay.style.display = "none";
 
     // Show popup after page loads
     window.addEventListener("load", () => {
