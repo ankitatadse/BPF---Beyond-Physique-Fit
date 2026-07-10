@@ -287,11 +287,26 @@ Looking forward to getting started! 💪`;
         <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
         Opening WhatsApp now so our coach can get your plan started.</p>
       `;
-      document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
-
-      setTimeout(() => { window.open(waURL, '_blank'); }, 1200);
+     document.getElementById("form-success").innerHTML += `
+    <div style="margin-top:20px;text-align:center;">
+        <a
+            href="${waURL}"
+            target="_blank"
+            style="
+                display:inline-block;
+                background:#CDFF00;
+                color:#111;
+                padding:12px 24px;
+                border-radius:8px;
+                font-weight:700;
+                text-decoration:none;
+            "
+        >
+            👉 Open WhatsApp
+        </a>
+    </div>
+`;
     }
-
   } catch (err) {
     console.error('Post-payment handling error:', err);
     alert('Your payment went through, but we hit an error finishing setup. Please contact us at ' + CONFIG.BUSINESS_EMAIL + ' with payment ID: ' + response.razorpay_payment_id);
