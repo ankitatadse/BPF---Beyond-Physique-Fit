@@ -21,9 +21,9 @@ const CONFIG = {
 };
 
 const PLAN_MAP = {
-  '100 Days — ₹999':      { name: '100 Days',  price: '₹10',    amount: '10' },
-  '6 Months — ₹14,999':  { name: '6 Months',  price: '₹10', amount: '10' },
-  '12 Months — ₹19,999': { name: '12 Months', price: '₹10', amount: '10' },
+  '100 Days — ₹999':      { name: '100 Days',  price: '₹999',    amount: '10' },
+  '6 Months — ₹14,999':  { name: '6 Months',  price: '₹14,999', amount: '10' },
+  '12 Months — ₹19,999': { name: '12 Months', price: '₹19,999', amount: '10' },
 };
 
 // =============================================
