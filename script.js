@@ -106,12 +106,25 @@ const PLAN_DURATION = {
   '12 Months': '365 days',
 };
 
+const PLAN_BULLETS = {
+  '100 Days': ['Materials delivered via email', 'Diet & workout PDFs sent instantly'],
+  '6 Months':  ['Personal onboarding via WhatsApp', 'Coach reaches out within 24 hours'],
+  '12 Months': ['Personal onboarding via WhatsApp', 'Coach reaches out within 24 hours'],
+};
+
 function openModal(planName, priceDisplay, amountInPaise) {
   currentPlan = { name: planName, price: priceDisplay, amount: parseInt(amountInPaise) * 100 };
   document.getElementById('modal-plan-name').textContent = planName + ' Plan';
   document.getElementById('modal-price-display').textContent = priceDisplay;
   const periodEl = document.getElementById('modal-period-display');
   if (periodEl) periodEl.textContent = 'one-time · ' + (PLAN_DURATION[planName] || '100 days');
+
+  const bullets = PLAN_BULLETS[planName] || PLAN_BULLETS['100 Days'];
+  const b2 = document.getElementById('modal-bullet-2');
+  const b3 = document.getElementById('modal-bullet-3');
+  if (b2) b2.lastChild.textContent = bullets[0];
+  if (b3) b3.lastChild.textContent = bullets[1];
+
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
