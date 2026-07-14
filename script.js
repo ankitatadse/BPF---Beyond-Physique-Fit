@@ -100,10 +100,18 @@ function selectPlan(planName, priceDisplay) {
 let currentPlan = { name: '', price: '', amount: 0 };
 let currentFormData = {};
 
+const PLAN_DURATION = {
+  '100 Days': '100 days',
+  '6 Months': '180 days',
+  '12 Months': '365 days',
+};
+
 function openModal(planName, priceDisplay, amountInPaise) {
   currentPlan = { name: planName, price: priceDisplay, amount: parseInt(amountInPaise) * 100 };
   document.getElementById('modal-plan-name').textContent = planName + ' Plan';
   document.getElementById('modal-price-display').textContent = priceDisplay;
+  const periodEl = document.getElementById('modal-period-display');
+  if (periodEl) periodEl.textContent = 'one-time · ' + (PLAN_DURATION[planName] || '100 days');
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -335,48 +343,62 @@ async function submitForm(e) {
   e.preventDefault();
   const form = document.getElementById('apply-form');
 
-  const invalidField = form.querySelector(':invalid');
-  if (invalidField) {
-    const stepEl = invalidField.closest('.step-panel');
-    if (stepEl && window.goToWizardStep) {
-      window.goToWizardStep(parseInt(stepEl.dataset.step));
+  try {
+    const invalidField = form.querySelector(':invalid');
+    if (invalidField) {
+      const stepEl = invalidField.closest('.step-panel');
+      if (stepEl && window.goToWizardStep) {
+        window.goToWizardStep(parseInt(stepEl.dataset.step));
+      }
+      if (window.showFieldError) {
+        window.showFieldError(invalidField);
+      } else {
+        invalidField.reportValidity();
+      }
+      return;
     }
-    invalidField.reportValidity();
-    return;
-  }
 
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
 
-  currentFormData = {
-    firstName:      document.getElementById('fname').value.trim(),
-    lastName:       document.getElementById('lname').value.trim(),
-    email:          document.getElementById('email').value.trim(),
-    phone:          document.getElementById('phone').value.trim(),
-    age:            document.getElementById('age').value.trim(),
-    city:           document.getElementById('city').value.trim(),
-    weight:         document.getElementById('weight').value.trim(),
-    height:         document.getElementById('height').value.trim(),
-    gender:         document.getElementById('gender').value,
-    foodPreference: document.getElementById('foodPreference').value,
-    workoutType:    document.getElementById('workoutType').value,
-    goal:           document.getElementById('goal').value,
-    plan:           document.getElementById('plan').value,
-    medical:        document.getElementById('medical') ? document.getElementById('medical').value.trim() : '',
-    commitment:     document.getElementById('commitment').value.trim(),
-    submittedAt:    new Date().toISOString(),
-    source:         'website-apply-form',
-  };
+    currentFormData = {
+      firstName:      document.getElementById('fname').value.trim(),
+      lastName:       document.getElementById('lname').value.trim(),
+      email:          document.getElementById('email').value.trim(),
+      phone:          document.getElementById('phone').value.trim(),
+      age:            document.getElementById('age').value.trim(),
+      city:           document.getElementById('city').value.trim(),
+      weight:         document.getElementById('weight').value.trim(),
+      height:         document.getElementById('height').value.trim(),
+      gender:         document.getElementById('gender').value,
+      foodPreference: document.getElementById('foodPreference').value,
+      workoutType:    document.getElementById('workoutType').value,
+      goal:           document.getElementById('goal').value,
+      plan:           document.getElementById('plan').value,
+      medical:        document.getElementById('medical') ? document.getElementById('medical').value.trim() : '',
+      commitment:     document.getElementById('commitment').value.trim(),
+      submittedAt:    new Date().toISOString(),
+      source:         'website-apply-form',
+    };
 
-  btn.disabled = false;
-  btn.textContent = 'Submit & Pay';
+    btn.disabled = false;
+    btn.textContent = 'Submit & Pay';
 
-  const selectedPlan = PLAN_MAP[currentFormData.plan];
-  if (selectedPlan) {
-    setTimeout(() => {
-      openModal(selectedPlan.name, selectedPlan.price, selectedPlan.amount);
-    }, 300);
+    const selectedPlan = PLAN_MAP[currentFormData.plan];
+    if (selectedPlan) {
+      setTimeout(() => {
+        openModal(selectedPlan.name, selectedPlan.price, selectedPlan.amount);
+      }, 300);
+    } else {
+      console.error('No matching plan found for:', currentFormData.plan);
+      alert('Something went wrong reading your selected plan. Please re-select your plan and try again.');
+    }
+  } catch (err) {
+    console.error('submitForm error:', err);
+    const btn = document.getElementById('submit-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit & Pay'; }
+    alert('Something went wrong submitting the form. Please try again, or contact us if this keeps happening.');
   }
 }
 
@@ -471,6 +493,32 @@ if (resultsTrack && carouselDotsWrap) {
 
   if (!btnNext || !btnBack || !submitBtn) return;
 
+  function clearFieldError(fieldId) {
+    const group = document.querySelector(`.pill-group[data-syncs="${fieldId}"]`);
+    if (group) group.classList.remove('field-error');
+    const msg = document.querySelector(`.field-error-msg[data-error-for="${fieldId}"]`);
+    if (msg) msg.classList.remove('visible');
+  }
+
+  function showFieldError(el) {
+    // Native browser validation tooltips can't be seen on our visually-hidden
+    // <select> elements (they're 1px/opacity:0 for the pill-button UI), so for
+    // those we show a real, visible error on the pill buttons instead.
+    if (el.tagName === 'SELECT' && el.classList.contains('hidden-select')) {
+      const group = document.querySelector(`.pill-group[data-syncs="${el.id}"]`);
+      const msg = document.querySelector(`.field-error-msg[data-error-for="${el.id}"]`);
+      if (group) {
+        group.classList.remove('field-error');
+        void group.offsetWidth; // restart animation if triggered twice in a row
+        group.classList.add('field-error');
+        group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (msg) msg.classList.add('visible');
+      return;
+    }
+    el.reportValidity();
+  }
+
   document.querySelectorAll('.pill-group').forEach(group => {
     const targetId = group.dataset.syncs;
     const select = document.getElementById(targetId);
@@ -481,6 +529,7 @@ if (resultsTrack && carouselDotsWrap) {
       group.querySelectorAll('.pill-option').forEach(p => p.classList.remove('selected'));
       opt.classList.add('selected');
       select.value = opt.dataset.value;
+      clearFieldError(targetId);
     });
   });
 
@@ -512,7 +561,7 @@ if (resultsTrack && carouselDotsWrap) {
     const inputs = panel.querySelectorAll('input[required], select[required]');
     for (const el of inputs) {
       if (!el.checkValidity()) {
-        el.reportValidity();
+        showFieldError(el);
         return false;
       }
     }
@@ -565,6 +614,8 @@ if (resultsTrack && carouselDotsWrap) {
       showStep(currentStep);
     }
   });
+
+  window.showFieldError = showFieldError;
 
   window.goToWizardStep = function(step) {
     currentStep = step;

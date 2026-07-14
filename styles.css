@@ -2164,6 +2164,33 @@ select.hidden-select {
 .pill-group { display: flex; gap: 8px; }
 .pill-group-vertical { flex-direction: column; }
 .pill-group-vertical .pill-option { text-align: left; }
+
+/* Visible validation error state — the real <select> is invisible (see
+   .hidden-select above), so native browser validation tooltips anchor to a
+   1px invisible point and the user never sees them. This gives a real,
+   visible error cue on the actual pill buttons the user interacts with. */
+.pill-group.field-error {
+  animation: pillShake 0.35s ease;
+}
+.pill-group.field-error .pill-option {
+  border-color: #ff5c5c !important;
+  box-shadow: 0 0 0 1px #ff5c5c;
+}
+@keyframes pillShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.field-error-msg {
+  color: #ff5c5c;
+  font-size: 12.5px;
+  margin-top: 6px;
+  display: none;
+}
+.field-error-msg.visible { display: block; }
+
 .pill-option {
   flex: 1;
   text-align: center;
