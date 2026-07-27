@@ -833,7 +833,64 @@
       </div>
     </div>
   </footer>
+    <!-- ₹1 LAKH CASH PRIZE POPUP -->
+<div id="launch-popup-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:16px;overflow-y:auto;">
+  <div style="background:linear-gradient(160deg,#0a3d3f 0%,#062628 100%);border-radius:24px;max-width:400px;width:100%;overflow:hidden;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(207,255,4,0.15);margin:auto;">
 
+    <!-- Yellow top banner -->
+    <div style="background:#CFFF04;padding:11px 20px;text-align:center;position:relative;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#083234;">🔥 LIMITED TIME CHALLENGE</div>
+      <div style="font-size:13px;font-weight:900;letter-spacing:1.5px;color:#083234;margin-top:2px;">100 PEOPLE • 100 DAYS • 1 WINNER</div>
+      <button id="popup-close" style="position:absolute;top:50%;right:12px;transform:translateY(-50%);background:rgba(8,50,52,0.2);border:none;color:#083234;width:24px;height:24px;border-radius:50%;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:28px 24px 24px;text-align:center;">
+
+      <!-- Trophy with glow -->
+      <div style="font-size:72px;line-height:1;margin-bottom:4px;filter:drop-shadow(0 0 20px rgba(207,255,4,0.4));animation:trophyBounce 2s ease-in-out infinite;">🏆</div>
+
+      <!-- Sparkle line -->
+      <div style="color:rgba(207,255,4,0.6);font-size:13px;letter-spacing:3px;margin-bottom:14px;">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+      <!-- Headline -->
+      <h2 style="font-family:'Inter',sans-serif;font-size:clamp(22px,6vw,30px);font-weight:900;line-height:1.15;color:#fff;text-transform:uppercase;margin-bottom:6px;letter-spacing:-0.5px;">
+        BEST TRANSFORMATION<br>WINS
+      </h2>
+      <div style="font-family:'Inter',sans-serif;font-size:clamp(34px,9vw,48px);font-weight:900;color:#CFFF04;text-transform:uppercase;line-height:1;margin-bottom:6px;text-shadow:0 0 30px rgba(207,255,4,0.5),0 0 60px rgba(207,255,4,0.2);letter-spacing:-1px;">₹1 LAKH</div>
+      <h2 style="font-family:'Inter',sans-serif;font-size:clamp(22px,6vw,30px);font-weight:900;line-height:1.15;color:#fff;text-transform:uppercase;margin-bottom:20px;letter-spacing:-0.5px;">CASH PRIZE!</h2>
+
+      <!-- Divider -->
+      <div style="width:48px;height:3px;background:#CFFF04;border-radius:2px;margin:0 auto 18px;opacity:0.6;"></div>
+
+      <!-- Subtext -->
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:22px;">Transform in 100 days. <strong style="color:#CFFF04;">Win ₹1 Lakh.</strong></p>
+
+      
+      <!-- CTA button -->
+      <button id="popup-join" style="width:100%;background:#CFFF04;color:#083234;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:900;letter-spacing:0.3px;cursor:pointer;text-transform:uppercase;box-shadow:0 8px 24px rgba(207,255,4,0.3);transition:transform 0.15s ease,box-shadow 0.15s ease;"
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(207,255,4,0.45)'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 24px rgba(207,255,4,0.3)'">
+        🔥 I WANT TO WIN — JOIN NOW
+      </button>
+
+      <!-- Skip link -->
+      <button id="popup-skip" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:11.5px;margin-top:12px;cursor:pointer;text-decoration:underline;display:block;width:100%;">
+        No thanks, I'll skip the prize
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- Trophy bounce animation -->
+<style>
+@keyframes trophyBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+</style>
+<!-- END POPUP -->
   <!-- STICKY CTA -->
   <div class="floating-cta-wrapper">
     <a href="#apply" class="floating-cta">

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // (remember: the markup was fully removed from index.html too —
     // see removed_popup_backup.html — so it needs to be added back
     // in as well, not just flipped on here).
-    const POPUP_ENABLED = false;
+    const POPUP_ENABLED = true;
 
     const stickyCta = document.querySelector('.floating-cta-wrapper');
 
