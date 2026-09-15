@@ -9,8 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const stickyCta = document.querySelector('.floating-cta-wrapper');
 
     function showStickyCta() {
+        // Arms the sticky CTA to be shown once appropriate (see the
+        // hero-scroll IntersectionObserver in script.js), instead of
+        // forcing it visible immediately — which used to make it stack
+        // on top of the hero's own "Apply Now" button.
         if (stickyCta) {
-            stickyCta.classList.add('visible');
+            stickyCta.classList.add('armed');
         }
     }
 

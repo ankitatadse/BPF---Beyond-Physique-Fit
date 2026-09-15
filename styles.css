@@ -1629,12 +1629,17 @@ footer {
     transition: opacity .3s ease;
 }
 
-.floating-cta-wrapper.visible {
+.floating-cta-wrapper.armed {
     opacity: 1;
     pointer-events: auto;
 }
 
-.floating-cta-wrapper.visible.at-apply {
+.floating-cta-wrapper.armed.hero-visible {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.floating-cta-wrapper.armed.at-apply {
     opacity: 0;
     pointer-events: none;
 }

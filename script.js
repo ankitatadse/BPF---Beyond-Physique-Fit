@@ -21,9 +21,9 @@ const CONFIG = {
 };
 
 const PLAN_MAP = {
-  '100 Days — ₹999':      { name: '100 Days',  price: '₹999',    amount: '10' },
-  '6 Months — ₹14,999':  { name: '6 Months',  price: '₹14,999', amount: '10' },
-  '12 Months — ₹19,999': { name: '12 Months', price: '₹19,999', amount: '10' },
+  '100 Days — ₹99':       { name: '100 Days',  price: '₹99',     amount: '99' },
+  '6 Months — ₹14,999':  { name: '6 Months',  price: '₹14,999', amount: '14999' },
+  '12 Months — ₹19,999': { name: '12 Months', price: '₹19,999', amount: '19999' },
 };
 
 // =============================================
@@ -48,6 +48,20 @@ if (stickyCta) {
     });
   }, { threshold: 0.1 });
   if (applySection) ctaObserver.observe(applySection);
+
+  // Only reveal the sticky CTA once the hero (which has its own
+  // "Apply Now" button) has scrolled out of view. Prevents the sticky
+  // CTA from stacking on top of the hero's button right after page load
+  // or right after the launch popup closes.
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        stickyCta.classList.toggle('hero-visible', entry.isIntersecting);
+      });
+    }, { threshold: 0.1 });
+    heroObserver.observe(heroSection);
+  }
 }
 
 // =============================================
@@ -547,7 +561,7 @@ if (resultsTrack && carouselDotsWrap) {
   });
 
   const PLAN_PREVIEW = {
-    '100 Days — ₹999':      { name: '100 Days Plan', price: '₹999' },
+    '100 Days — ₹99':       { name: '100 Days Plan', price: '₹99' },
     '6 Months — ₹14,999':  { name: '6 Months Plan', price: '₹14,999' },
     '12 Months — ₹19,999': { name: '12 Months Plan', price: '₹19,999' },
   };
