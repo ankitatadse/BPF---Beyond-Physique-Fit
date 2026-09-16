@@ -11,7 +11,7 @@ window.addEventListener('load', () => {
 // =============================================
 const CONFIG = {
   MAKE_WEBHOOK_URL: 'https://hook.eu1.make.com/o6htoerdtkqxs9lvplvrlfxatepnp1wb',
-  BREVO_SENDER_NAME: '100 People. 100 Days.',
+  BREVO_SENDER_NAME: '100 People. 12 Weeks.',
   BUSINESS_NAME: 'Beyond Physique Fit',
   BUSINESS_EMAIL: 'beyondphysiquefit@gmail.com',
   // Razorpay Key ID is no longer hardcoded here — it's fetched at runtime
@@ -21,7 +21,7 @@ const CONFIG = {
 };
 
 const PLAN_MAP = {
-  '100 Days — ₹99':       { name: '100 Days',  price: '₹99',     amount: '99' },
+  '12 Weeks — ₹99':       { name: '12 Weeks',  price: '₹99',     amount: '99' },
   '6 Months — ₹14,999':  { name: '6 Months',  price: '₹14,999', amount: '14999' },
   '12 Months — ₹19,999': { name: '12 Months', price: '₹19,999', amount: '19999' },
 };
@@ -41,27 +41,35 @@ document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 // =============================================
 const stickyCta = document.querySelector('.floating-cta-wrapper');
 if (stickyCta) {
-  const applySection = document.getElementById('apply');
-  const ctaObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      stickyCta.classList.toggle('at-apply', entry.isIntersecting);
-    });
-  }, { threshold: 0.1 });
-  if (applySection) ctaObserver.observe(applySection);
-
-  // Only reveal the sticky CTA once the hero (which has its own
-  // "Apply Now" button) has scrolled out of view. Prevents the sticky
-  // CTA from stacking on top of the hero's button right after page load
-  // or right after the launch popup closes.
   const heroSection = document.querySelector('.hero');
-  if (heroSection) {
-    const heroObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        stickyCta.classList.toggle('hero-visible', entry.isIntersecting);
-      });
-    }, { threshold: 0.1 });
-    heroObserver.observe(heroSection);
+  const pricingSection = document.getElementById('pricing');
+  const applySection = document.getElementById('apply');
+
+  function sectionInView(el) {
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // "in view" = any part of the section overlaps the viewport at all
+    return rect.top < vh && rect.bottom > 0;
   }
+
+  function updateStickyCta() {
+    const shouldHide = sectionInView(heroSection) || sectionInView(pricingSection) || sectionInView(applySection);
+    stickyCta.classList.toggle('cta-hidden', shouldHide);
+  }
+
+  let ctaTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!ctaTicking) {
+      window.requestAnimationFrame(() => {
+        updateStickyCta();
+        ctaTicking = false;
+      });
+      ctaTicking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateStickyCta);
+  updateStickyCta();
 }
 
 // =============================================
@@ -115,13 +123,13 @@ let currentPlan = { name: '', price: '', amount: 0 };
 let currentFormData = {};
 
 const PLAN_DURATION = {
-  '100 Days': '100 days',
+  '12 Weeks': '12 weeks',
   '6 Months': '180 days',
   '12 Months': '365 days',
 };
 
 const PLAN_BULLETS = {
-  '100 Days': ['Materials delivered via email', 'Diet & workout PDFs sent instantly'],
+  '12 Weeks': ['Materials delivered via email', 'Diet & workout PDFs sent instantly'],
   '6 Months':  ['Personal onboarding via WhatsApp', 'Coach reaches out within 24 hours'],
   '12 Months': ['Personal onboarding via WhatsApp', 'Coach reaches out within 24 hours'],
 };
@@ -131,9 +139,9 @@ function openModal(planName, priceDisplay, amountInPaise) {
   document.getElementById('modal-plan-name').textContent = planName + ' Plan';
   document.getElementById('modal-price-display').textContent = priceDisplay;
   const periodEl = document.getElementById('modal-period-display');
-  if (periodEl) periodEl.textContent = 'one-time · ' + (PLAN_DURATION[planName] || '100 days');
+  if (periodEl) periodEl.textContent = 'one-time · ' + (PLAN_DURATION[planName] || '12 weeks');
 
-  const bullets = PLAN_BULLETS[planName] || PLAN_BULLETS['100 Days'];
+  const bullets = PLAN_BULLETS[planName] || PLAN_BULLETS['12 Weeks'];
   const b2 = document.getElementById('modal-bullet-2');
   const b3 = document.getElementById('modal-bullet-3');
   if (b2) b2.lastChild.textContent = bullets[0];
@@ -286,7 +294,7 @@ async function handleConfirmedPayment(response, order) {
     document.getElementById('apply-form').style.display = 'none';
     document.getElementById('form-success').style.display = 'block';
 
-    if (currentPlan.name === '100 Days') {
+    if (currentPlan.name === '12 Weeks') {
       document.getElementById('form-success').innerHTML = `
         <h3>✅ Payment Successful!</h3>
         <p>Welcome to BPF, ${currentFormData.firstName}! 🎉<br>
@@ -561,7 +569,7 @@ if (resultsTrack && carouselDotsWrap) {
   });
 
   const PLAN_PREVIEW = {
-    '100 Days — ₹99':       { name: '100 Days Plan', price: '₹99' },
+    '12 Weeks — ₹99':       { name: '12 Weeks Plan', price: '₹99' },
     '6 Months — ₹14,999':  { name: '6 Months Plan', price: '₹14,999' },
     '12 Months — ₹19,999': { name: '12 Months Plan', price: '₹19,999' },
   };
