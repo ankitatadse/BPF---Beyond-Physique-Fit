@@ -1,9 +1,26 @@
 // Force landing page to always start at top, ignoring any #hash on load
+// Disable browser scroll restoration completely
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+// Clear any hash from URL
 if (window.location.hash) {
   history.replaceState(null, '', window.location.pathname + window.location.search);
 }
+
+// Force scroll to top on every load
+window.scrollTo(0, 0);
+
 window.addEventListener('load', () => {
   window.scrollTo(0, 0);
+});
+
+// Also catch any delayed scroll attempts
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => window.scrollTo(0, 0), 0);
+  setTimeout(() => window.scrollTo(0, 0), 100);
+  setTimeout(() => window.scrollTo(0, 0), 300);
 });
 
 // =============================================
