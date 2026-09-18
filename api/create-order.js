@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { amount, currency, receipt } = req.body || {};
+    const { amount, currency, receipt, notes } = req.body || {};
 
     if (!amount || isNaN(amount)) {
       return res.status(400).json({ error: 'A valid amount (in paise) is required' });
@@ -26,6 +26,10 @@ module.exports = async function handler(req, res) {
       amount: parseInt(amount, 10), // amount in paise (e.g. ₹999 = 99900)
       currency: currency || 'INR',
       receipt: receipt || `receipt_${Date.now()}`,
+      // Echoed back by Razorpay on the payment entity (and in its native
+      // webhook) — lets us recover full form data even if our own
+      // client-side webhook call to Make.com never fires.
+      notes: notes && typeof notes === 'object' ? notes : undefined,
     });
 
     return res.status(200).json({

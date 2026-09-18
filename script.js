@@ -1,26 +1,9 @@
 // Force landing page to always start at top, ignoring any #hash on load
-// Disable browser scroll restoration completely
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-
-// Clear any hash from URL
 if (window.location.hash) {
   history.replaceState(null, '', window.location.pathname + window.location.search);
 }
-
-// Force scroll to top on every load
-window.scrollTo(0, 0);
-
 window.addEventListener('load', () => {
   window.scrollTo(0, 0);
-});
-
-// Also catch any delayed scroll attempts
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => window.scrollTo(0, 0), 0);
-  setTimeout(() => window.scrollTo(0, 0), 100);
-  setTimeout(() => window.scrollTo(0, 0), 300);
 });
 
 // =============================================
@@ -210,6 +193,24 @@ async function initiateRazorpay() {
         amount: currentPlan.amount, // already in paise
         currency: 'INR',
         receipt: `bpf_${currentPlan.name.replace(/\s+/g, '')}_${Date.now()}`,
+        // Notes are echoed back by Razorpay on payment.entity.notes in its
+        // own native webhook — this is a fallback copy of the form data,
+        // independent of whether our own client-side webhook call succeeds.
+        notes: {
+          plan: currentPlan.name,
+          firstName: currentFormData.firstName || '',
+          lastName: currentFormData.lastName || '',
+          email: currentFormData.email || '',
+          phone: currentFormData.phone || '',
+          age: currentFormData.age || '',
+          city: currentFormData.city || '',
+          weight: currentFormData.weight || '',
+          height: currentFormData.height || '',
+          gender: currentFormData.gender || '',
+          foodPreference: currentFormData.foodPreference || '',
+          workoutType: currentFormData.workoutType || '',
+          goal: currentFormData.goal || '',
+        },
       }),
     });
     const order = await orderRes.json();
